@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\WindowName;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Native\Laravel\Facades\Window;
 
 class RegisteredUserController extends Controller
 {
@@ -20,6 +22,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
+        Window::resize(Window::current()->width, Window::current()->height + 55, WindowName::MAIN->getId());
+
         return Inertia::render('auth/Register');
     }
 
