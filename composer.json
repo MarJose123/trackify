@@ -1,11 +1,15 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/vue-starter-kit",
+    "name": "marjose123/trackify",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A simple time tracking and billing tool for freelancers to log hours, manage projects, and generate invoices effortlessly.",
     "keywords": [
-        "laravel",
-        "framework"
+        "Trackify",
+        "Freelance Tool",
+        "Freelance Tracking & Billing",
+        "Freelance Project Tracking",
+        "Project Tracking",
+        "Desktop App"
     ],
     "license": "MIT",
     "require": {
