@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use Native\Laravel\Facades\Window;
+use App\Enums\DefaultWindowSize;
+use App\Enums\WindowName;
 use Native\Laravel\Contracts\ProvidesPhpIni;
+use Native\Laravel\Facades\Window;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
@@ -14,9 +16,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     public function boot(): void
     {
         Window::open()
-            ->position(100,100)
-            ->minHeight(650)
-            ->minWidth(1060)
+            ->id(WindowName::MAIN->getId())
+            ->position(100, 100)
+            ->minHeight(DefaultWindowSize::HEIGHT->getSize())
+            ->minWidth(DefaultWindowSize::WIDTH->getSize())
             ->rememberState();
     }
 
