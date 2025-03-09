@@ -131,6 +131,8 @@ return [
      */
     'prebuild' => [
         // 'npm run build',
+        'npm run build', // Run a command before the build
+        'php artisan optimize', // Run another command before the build
     ],
 
     'postbuild' => [
