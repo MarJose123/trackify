@@ -18,7 +18,6 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
-
         Window::open()
             ->id(WindowName::MAIN->getId())
             ->hideMenu()
