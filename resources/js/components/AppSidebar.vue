@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid } from 'lucide-vue-next';
+import { CalendarRange, Clock, FolderKanban, LayoutGrid, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -14,7 +14,28 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Clock',
+        href: '#',
+        icon: Clock,
+    },
+    {
+        title: 'Timesheets',
+        href: '#',
+        icon: CalendarRange,
+    },
+    {
+        title: 'Projects',
+        href: '#',
+        icon: FolderKanban,
+    },
+    {
+        title: 'Client',
+        href: '#',
+        icon: Users,
+    },
 ];
+
 
 const footerNavItems: NavItem[] = [
     // {
