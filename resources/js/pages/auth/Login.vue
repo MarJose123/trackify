@@ -56,7 +56,7 @@ const submit = () => {
                     <div class="flex items-center justify-between">
                         <Label for="password">Password</Label>
                         <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" :tabindex="5">
-                            Forgot password?
+                            Recover password?
                         </TextLink>
                     </div>
                     <Input
@@ -86,7 +86,7 @@ const submit = () => {
 
             <div class="text-center text-sm text-muted-foreground">
                 Don't have an account?
-                <TextLink :href="route('register')" :tabindex="5">Sign up</TextLink>
+                <TextLink :href="route('register')" :tabindex="5">Create Account</TextLink>
             </div>
         </form>
     </AuthBase>
