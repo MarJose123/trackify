@@ -5,9 +5,7 @@ namespace App\Providers;
 use App\Concerns\Application;
 use App\Enums\DefaultWindowSize;
 use App\Enums\WindowName;
-use App\Models\User;
 use Native\Laravel\Contracts\ProvidesPhpIni;
-use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\Window;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
@@ -29,7 +27,6 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->minWidth(DefaultWindowSize::WIDTH->getSize())
             ->url($this->isFirstInstalled() ? route('register') : route('login'))
             ->rememberState();
-
 
     }
 
