@@ -24,10 +24,6 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
-
-        if(app()->environment() === 'production') {
-            $middleware->append(PreventRegularBrowserAccess::class);
-        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
