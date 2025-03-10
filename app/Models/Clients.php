@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\BillingMethod;
 use App\Enums\CurrencyCode;
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,11 +20,13 @@ class Clients extends Model
         'currency',
         'billing_method',
         'company_name',
+        'status',
     ];
 
     protected $casts = [
         'currency' => CurrencyCode::class,
         'billing_method' => BillingMethod::class,
+        'status' => Status::class,
     ];
 
     public function user(): BelongsTo

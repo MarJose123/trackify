@@ -1,3 +1,4 @@
+import { Pagination } from '@/types/pagination';
 import type { PageProps } from '@inertiajs/core';
 import type { LucideIcon } from 'lucide-vue-next';
 import type { Config } from 'ziggy-js';
@@ -26,14 +27,16 @@ export interface SharedData extends PageProps {
 }
 
 export interface Client {
+    id: string;
     name: string;
     currency: string;
     billing_method: string;
     company_name: string;
+    status: string;
 }
 
 export interface ClientsData extends SharedData {
-    clients: Client;
+    clients: Pagination & { data: Client[] };
 }
 
 export interface User {

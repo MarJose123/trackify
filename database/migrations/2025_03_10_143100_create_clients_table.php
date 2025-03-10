@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('user_id');
+            $table->foreignUuid('user_id');
             $table->string('name');
             $table->string('company_name');
             $table->string('currency');
             $table->string('billing_method');
+            $table->string('status');
             $table->timestamps();
         });
     }
