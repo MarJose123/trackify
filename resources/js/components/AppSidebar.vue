@@ -28,7 +28,7 @@ const mainNavItems: NavItem[] = [
         icon: FolderKanban,
     },
     {
-        title: 'Client',
+        title: 'Clients',
         href: '#',
         icon: Users,
     },
