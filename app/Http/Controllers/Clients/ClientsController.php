@@ -10,6 +10,6 @@ class ClientsController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('clients/List',[]);
+        return Inertia::render('clients/List', []);
     }
 }
