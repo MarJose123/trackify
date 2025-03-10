@@ -26,8 +26,6 @@ class Clients extends Model
         'billing_method' => BillingMethod::class,
     ];
 
-
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
