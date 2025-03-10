@@ -25,6 +25,17 @@ export interface SharedData extends PageProps {
     ziggy: Config & { location: string };
 }
 
+export interface Client {
+    name: string;
+    currency: string;
+    billing_method: string;
+    company_name: string;
+}
+
+export interface ClientsData extends SharedData {
+    clients: Client;
+}
+
 export interface User {
     id: number;
     name: string;
