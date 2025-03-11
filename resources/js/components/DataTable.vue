@@ -4,20 +4,36 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, valueUpdater } from '@/lib/utils';
 import {
-    ColumnDef,
-    ColumnFiltersState,
-    ExpandedState,
     FlexRender,
     getCoreRowModel,
-    getExpandedRowModel,
-    getFilteredRowModel,
     getPaginationRowModel,
+    getFilteredRowModel,
     getSortedRowModel,
-    SortingState,
+    getExpandedRowModel,
     useVueTable,
+} from "@tanstack/vue-table"
+import type {
+    ColumnDef,
+    ColumnFiltersState,
+    SortingState,
     VisibilityState,
-} from '@tanstack/vue-table';
-import { ref } from 'vue';
+    ExpandedState
+} from '@tanstack/vue-table'
+import { ref, ShallowRef } from 'vue';
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {  ChevronDown } from 'lucide-vue-next'
+import DataTableViewOptions from '@/components/DataTableViewOptions.vue';
+
+
+const props = defineProps<{
+    columns: ColumnDef<any>[];
+    data: ShallowRef<any[]>;
+}>();
 
 const sorting = ref<SortingState>([]);
 const columnFilters = ref<ColumnFiltersState>([]);
@@ -25,28 +41,21 @@ const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 const expanded = ref<ExpandedState>({});
 
-const props = defineProps<{
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
-}>();
+
 
 const table = useVueTable({
-    get data() {
-        return props.data;
-    },
-    get columns() {
-        return props.columns;
-    },
+    data: props.data,
+    columns: props.columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-    onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
-    onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
-    onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
-    onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
+    onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
+    onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+    onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
+    onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
+    onExpandedChange: updaterOrValue => valueUpdater(updaterOrValue, expanded),
     state: {
         get sorting() {
             return sorting.value;
@@ -76,6 +85,7 @@ const table = useVueTable({
                 :model-value="table.getColumn('company_name')?.getFilterValue() as string"
                 @update:model-value="table.getColumn('company_name')?.setFilterValue($event)"
             />
+            <DataTableViewOptions :table="table" />
         </div>
         <div class="rounded-md border">
             <Table>
@@ -99,18 +109,8 @@ const table = useVueTable({
                 <TableBody>
                     <template v-if="table.getRowModel().rows?.length">
                         <template v-for="row in table.getRowModel().rows" :key="row.id">
-                            <TableRow :data-state="row.getIsSelected() && 'selected'">
-                                <TableCell
-                                    v-for="cell in row.getVisibleCells()"
-                                    :key="cell.id"
-                                    :data-pinned="cell.column.getIsPinned()"
-                                    :class="
-                                        cn(
-                                            { 'sticky bg-background/95': cell.column.getIsPinned() },
-                                            cell.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
-                                        )
-                                    "
-                                >
+                            <TableRow :data-state="row.getIsSelected() ? 'selected' : undefined">
+                                <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                                     <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
                                 </TableCell>
                             </TableRow>

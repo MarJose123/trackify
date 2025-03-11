@@ -1,31 +1,52 @@
 import ClientsDataTableDropDown from '@/components/ClientsDataTableDropDown.vue';
 import { Client } from '@/types';
 import { ColumnDef } from '@tanstack/vue-table';
+import { Checkbox } from '@/components/ui/checkbox'
 import { h } from 'vue';
 
 export const clientColumns: ColumnDef<Client>[] = [
     {
+        id: 'select',
+        header: ({ table }) => h(Checkbox, {
+            'modelValue': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
+            'onUpdate:modelValue': value => table.toggleAllRowsSelected(!!value),
+            'ariaLabel': 'Select all',
+        }),
+        cell: ({ row }) => h(Checkbox, {
+            'modelValue': row.getIsSelected(),
+            'onUpdate:modelValue': value => row.toggleSelected(!!value),
+            'ariaLabel': 'Select row',
+        }),
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
         accessorKey: 'company_name',
+        enableHiding: false,
         header: () => h('div', {}, 'Company Name'),
         cell: ({ row }) => h('div', {}, row.getValue('company_name')),
     },
     {
         accessorKey: 'name',
+        enableHiding: false,
         header: () => h('div', {}, 'Name'),
         cell: ({ row }) => h('div', {}, row.getValue('name')),
     },
     {
         accessorKey: 'status',
+        enableHiding: true,
         header: () => h('div', {}, 'Status'),
         cell: ({ row }) => h('div', {}, row.getValue('status')),
     },
     {
         accessorKey: 'currency',
+        enableHiding: true,
         header: () => h('div', {}, 'Currency'),
         cell: ({ row }) => h('div', {}, row.getValue('currency')),
     },
     {
         accessorKey: 'actions',
+        enableHiding: false,
         header: () => h('div', { class: '' }, ''),
         cell: ({ row }) => {
             const client = row.original;
