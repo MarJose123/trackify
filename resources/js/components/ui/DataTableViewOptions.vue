@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import type { Table } from '@tanstack/vue-table';
-import { Settings2 } from 'lucide-vue-next';
+import { SlidersHorizontal } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface DataTableViewOptionsProps {
@@ -25,11 +25,11 @@ const columns = computed(() => props.table.getAllColumns().filter((column) => ty
     <DropdownMenu>
         <DropdownMenuTrigger as-child>
             <Button variant="outline" size="sm" class="ml-auto hidden h-8 lg:flex">
-                <Settings2 class="mr-2 h-4 w-4" />
+                <SlidersHorizontal class="mr-1 h-4 w-4" />
                 View
             </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" class="w-[150px]">
+        <DropdownMenuContent align="end">
             <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
             <DropdownMenuSeparator />
 
