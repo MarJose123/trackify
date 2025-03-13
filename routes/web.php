@@ -13,7 +13,7 @@ Route::middleware('auth')->get('/dashboard', function () {
 
 Route::get('/test', function () {
     echo 'test';
-   ray('test');
+    ray('test');
 });
 
 require __DIR__.'/settings.php';
