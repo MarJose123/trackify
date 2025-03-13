@@ -24,7 +24,7 @@ const columns = computed(() => props.table.getAllColumns().filter((column) => ty
 <template>
     <DropdownMenu>
         <DropdownMenuTrigger as-child>
-            <Button variant="outline" size="sm" class="ml-auto hidden h-8 lg:flex">
+            <Button variant="outline">
                 <SlidersHorizontal class="mr-1 h-4 w-4" />
                 View
             </Button>

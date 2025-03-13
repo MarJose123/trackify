@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="TData, TValue">
+import DataTableFilterOption from '@/components/client/DataTableFilterOption.vue';
 import DataTableViewOptions from '@/components/ui/DataTableViewOptions.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,7 +74,10 @@ const table = useVueTable({
                 :model-value="table.getColumn('company_name')?.getFilterValue() as string"
                 @update:model-value="table.getColumn('company_name')?.setFilterValue($event)"
             />
-            <DataTableViewOptions :table="table" />
+            <div class="ml-auto flex-row flex-wrap space-x-1">
+                <DataTableFilterOption />
+                <DataTableViewOptions :table="table" />
+            </div>
         </div>
         <div class="rounded-md border">
             <Table>
