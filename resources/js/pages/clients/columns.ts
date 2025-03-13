@@ -1,22 +1,24 @@
 import ClientsDataTableDropDown from '@/components/ClientsDataTableDropDown.vue';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Client } from '@/types';
 import { ColumnDef } from '@tanstack/vue-table';
-import { Checkbox } from '@/components/ui/checkbox'
 import { h } from 'vue';
 
 export const clientColumns: ColumnDef<Client>[] = [
     {
         id: 'select',
-        header: ({ table }) => h(Checkbox, {
-            'modelValue': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
-            'onUpdate:modelValue': value => table.toggleAllRowsSelected(!!value),
-            'ariaLabel': 'Select all',
-        }),
-        cell: ({ row }) => h(Checkbox, {
-            'modelValue': row.getIsSelected(),
-            'onUpdate:modelValue': value => row.toggleSelected(!!value),
-            'ariaLabel': 'Select row',
-        }),
+        header: ({ table }) =>
+            h(Checkbox, {
+                modelValue: table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
+                'onUpdate:modelValue': (value) => table.toggleAllRowsSelected(!!value),
+                ariaLabel: 'Select all',
+            }),
+        cell: ({ row }) =>
+            h(Checkbox, {
+                modelValue: row.getIsSelected(),
+                'onUpdate:modelValue': (value) => row.toggleSelected(!!value),
+                ariaLabel: 'Select row',
+            }),
         enableSorting: false,
         enableHiding: false,
     },

@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type { Table } from '@tanstack/vue-table'
-import { computed } from 'vue'
-import { Settings2 } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -10,30 +7,25 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu';
+import type { Table } from '@tanstack/vue-table';
+import { Settings2 } from 'lucide-vue-next';
+import { computed } from 'vue';
 
 interface DataTableViewOptionsProps {
-    table: Table<any[]>
+    table: Table<any[]>;
 }
 
-const props = defineProps<DataTableViewOptionsProps>()
+const props = defineProps<DataTableViewOptionsProps>();
 
-const columns = computed(() => props.table.getAllColumns()
-    .filter(
-        column =>
-            typeof column.accessorFn !== 'undefined' && column.getCanHide(),
-    ))
+const columns = computed(() => props.table.getAllColumns().filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide()));
 </script>
 
 <template>
     <DropdownMenu>
         <DropdownMenuTrigger as-child>
-            <Button
-                variant="outline"
-                size="sm"
-                class="hidden h-8 ml-auto lg:flex"
-            >
-                <Settings2 class="w-4 h-4 mr-2" />
+            <Button variant="outline" size="sm" class="ml-auto hidden h-8 lg:flex">
+                <Settings2 class="mr-2 h-4 w-4" />
                 View
             </Button>
         </DropdownMenuTrigger>

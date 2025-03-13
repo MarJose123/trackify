@@ -15,7 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const page = usePage<ClientsData>();
 const clients = page.props.clients.data as Client[];
-console.log("clients", clients);
+console.log('clients', clients);
 </script>
 
 <template>

@@ -1,38 +1,24 @@
 <script setup lang="ts" generic="TData, TValue">
+import DataTableViewOptions from '@/components/DataTableViewOptions.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, valueUpdater } from '@/lib/utils';
+import type { ColumnDef, ColumnFiltersState, ExpandedState, SortingState, VisibilityState } from '@tanstack/vue-table';
 import {
     FlexRender,
     getCoreRowModel,
-    getPaginationRowModel,
-    getFilteredRowModel,
-    getSortedRowModel,
     getExpandedRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
     useVueTable,
-} from "@tanstack/vue-table"
-import type {
-    ColumnDef,
-    ColumnFiltersState,
-    SortingState,
-    VisibilityState,
-    ExpandedState
-} from '@tanstack/vue-table'
-import { ref, ShallowRef } from 'vue';
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {  ChevronDown } from 'lucide-vue-next'
-import DataTableViewOptions from '@/components/DataTableViewOptions.vue';
-
+} from '@tanstack/vue-table';
+import { ref } from 'vue';
 
 const props = defineProps<{
     columns: ColumnDef<any>[];
-    data: ShallowRef<any[]>;
+    data: TData[];
 }>();
 
 const sorting = ref<SortingState>([]);
@@ -40,8 +26,6 @@ const columnFilters = ref<ColumnFiltersState>([]);
 const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 const expanded = ref<ExpandedState>({});
-
-
 
 const table = useVueTable({
     data: props.data,
@@ -51,11 +35,11 @@ const table = useVueTable({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
-    onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
-    onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
-    onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
-    onExpandedChange: updaterOrValue => valueUpdater(updaterOrValue, expanded),
+    onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
+    onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
+    onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
+    onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
+    onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
     state: {
         get sorting() {
             return sorting.value;
