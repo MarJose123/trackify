@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem, Client, ClientsData } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
 
-import DataTable from '@/components/DataTable.vue';
+import DataTable from '@/components/ui/DataTable.vue';
 import { clientColumns } from '@/pages/clients/columns';
 
 const breadcrumbs: BreadcrumbItem[] = [

@@ -9,14 +9,14 @@ export const clientColumns: ColumnDef<Client>[] = [
         id: 'select',
         header: ({ table }) =>
             h(Checkbox, {
-                modelValue: table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
-                'onUpdate:modelValue': (value) => table.toggleAllRowsSelected(!!value),
+                checked: table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
+                'onUpdate:checked': (value) => table.toggleAllRowsSelected(!!value),
                 ariaLabel: 'Select all',
             }),
         cell: ({ row }) =>
             h(Checkbox, {
-                modelValue: row.getIsSelected(),
-                'onUpdate:modelValue': (value) => row.toggleSelected(!!value),
+                checked: row.getIsSelected(),
+                'onUpdate:checked': (value) => row.toggleSelected(!!value),
                 ariaLabel: 'Select row',
             }),
         enableSorting: false,

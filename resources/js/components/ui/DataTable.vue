@@ -12,7 +12,7 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
-    useVueTable,
+    useVueTable
 } from '@tanstack/vue-table';
 import { ref } from 'vue';
 
@@ -28,8 +28,8 @@ const rowSelection = ref({});
 const expanded = ref<ExpandedState>({});
 
 const table = useVueTable({
-    data: props.data,
-    columns: props.columns,
+    get data() { return props.data },
+    get columns() {return props.columns},
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -37,7 +37,7 @@ const table = useVueTable({
     getExpandedRowModel: getExpandedRowModel(),
     onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
     onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
-    onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
+    onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
     onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
     onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
     state: {
@@ -114,6 +114,10 @@ const table = useVueTable({
         </div>
 
         <div class="flex items-center justify-end space-x-2 py-4">
+            <div class="flex-1 text-sm text-muted-foreground">
+                {{ table.getFilteredSelectedRowModel().rows.length }} of
+                {{ table.getFilteredRowModel().rows.length }} row(s) selected.
+            </div>
             <div class="space-x-2">
                 <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()"> Previous </Button>
                 <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()"> Next </Button>

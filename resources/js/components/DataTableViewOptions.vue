@@ -37,8 +37,8 @@ const columns = computed(() => props.table.getAllColumns().filter((column) => ty
                 v-for="column in columns"
                 :key="column.id"
                 class="capitalize"
-                :modelValue="column.getIsVisible()"
-                @update:modelValue="(value) => column.toggleVisibility(!!value)"
+                :checked="column.getIsVisible()"
+                @update:checked="(value) => column.toggleVisibility(!!value)"
             >
                 {{ column.id }}
             </DropdownMenuCheckboxItem>
