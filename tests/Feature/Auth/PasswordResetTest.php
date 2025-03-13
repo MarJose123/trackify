@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Notification;
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('reset password link screen can be rendered', function () {
+    $user = User::factory()->create();
     $response = $this->get('/forgot-password');
 
     $response->assertStatus(200);

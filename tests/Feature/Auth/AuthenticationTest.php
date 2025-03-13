@@ -5,6 +5,8 @@ use App\Models\User;
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('login screen can be rendered', function () {
+    $user = User::factory()->create();
+
     $response = $this->get('/login');
 
     $response->assertStatus(200);
@@ -39,5 +41,5 @@ test('users can logout', function () {
     $response = $this->actingAs($user)->post('/logout');
 
     $this->assertGuest();
-    $response->assertRedirect('/');
+    $response->assertRedirect('/login');
 });
