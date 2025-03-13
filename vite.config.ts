@@ -5,9 +5,13 @@ import path from 'path';
 import tailwindcss from 'tailwindcss';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
     plugins: [
+        vueDevTools({
+            appendTo: 'resources/js/app.ts'
+        }),
         laravel({
             input: ['resources/js/app.ts'],
             ssr: 'resources/js/ssr.ts',
