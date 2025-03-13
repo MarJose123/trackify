@@ -21,7 +21,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request): Response
     {
-        Window::resize(DefaultWindowSize::WIDTH->getSize(), DefaultWindowSize::HEIGHT->getSize(), WindowName::MAIN->getId());
+        if (! app()->runningInConsole() && ! app()->runningUnitTests()) {
+            Window::resize(DefaultWindowSize::WIDTH->getSize(), DefaultWindowSize::HEIGHT->getSize(), WindowName::MAIN->getId());
+        }
 
         return Inertia::render('auth/Login', [
             'canResetPassword' => Route::has('password.request'),
