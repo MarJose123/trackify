@@ -4,6 +4,7 @@ import { type BreadcrumbItem, Client, ClientsData } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
 
 import DataTable from '@/components/client/DataTable.vue';
+import eventBus from '@/lib/eventBus';
 import { clientColumns } from '@/pages/clients/columns';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -16,6 +17,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 const page = usePage<ClientsData>();
 const clients = page.props.clients.data as Client[];
 console.log('clients', clients);
+
+eventBus.on('*', (type, filter) => console.log(type, filter));
 </script>
 
 <template>
