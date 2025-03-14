@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, valueUpdater } from '@/lib/utils';
+import { router } from '@inertiajs/vue3';
 import type { ColumnDef, ColumnFiltersState, ExpandedState, SortingState, VisibilityState } from '@tanstack/vue-table';
 import {
     FlexRender,
@@ -79,7 +80,7 @@ const table = useVueTable({
                 @update:model-value="table.getColumn('company_name')?.setFilterValue($event)"
             />
             <div class="ml-auto flex-row flex-wrap space-x-1">
-                <Button variant="outline">
+                <Button variant="outline" @click.prevent="router.visit(route('clients.create'))">
                     <UserPlus class="mr-1 h-4 w-4" />
                     Add
                 </Button>

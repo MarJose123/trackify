@@ -3,9 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { api } from '@/lib/axios';
 import eventBus from '@/lib/eventBus';
+import { ClientTableFilter } from '@/types/clients';
 import { Filter } from 'lucide-vue-next';
-import { reactive, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
+
+const availableFilter = ref<ClientTableFilter>();
 
 const filter = reactive({
     status: undefined,
@@ -17,9 +21,14 @@ const resetFilter = () => {
     filter.currency = undefined;
 };
 
-watch(filter, (v) => {
+onMounted(() => {
+    api()
+        .get(route('clients.table-filter-status'))
+        .then((resp) => (availableFilter.value = resp.data));
+});
+
+watch(filter, () => {
     eventBus.emit('client-table-filter', filter);
-    console.log(v);
 });
 </script>
 
@@ -47,8 +56,9 @@ watch(filter, (v) => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Status</SelectLabel>
-                                    <SelectItem value="Active"> Active </SelectItem>
-                                    <SelectItem value="Closed"> Closed </SelectItem>
+                                    <SelectItem v-for="status in availableFilter?.status" :key="status" :value="status">
+                                        {{ status }}
+                                    </SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -62,17 +72,15 @@ watch(filter, (v) => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Currency</SelectLabel>
-                                    <SelectItem value="PHP"> PHP </SelectItem>
-                                    <SelectItem value="USD"> USD </SelectItem>
-                                    <SelectItem value="EUR"> EUR </SelectItem>
-                                    <SelectItem value="GBP"> GBP </SelectItem>
-                                    <SelectItem value="AUD"> AUD </SelectItem>
+                                    <SelectItem v-for="currency in availableFilter?.currency" :key="currency" :value="currency">
+                                        {{ currency }}
+                                    </SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
                     </div>
                     <div class="grid grid-cols-3 items-center gap-4">
-                        <Button variant="outline" class="col-end-3" @click.prevent="resetFilter"> Reset Filter </Button>
+                        <Button variant="outline" class="col-end-3" @click.prevent="resetFilter"> Reset Filter</Button>
                     </div>
                 </div>
             </div>
