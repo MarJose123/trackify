@@ -33,6 +33,7 @@ export interface Client {
     billing_method: string;
     company_name: string;
     status: string;
+    rate: number;
 }
 
 export interface ClientsData extends SharedData {

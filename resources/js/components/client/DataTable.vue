@@ -24,7 +24,10 @@ const props = defineProps<{
 
 const sorting = ref<SortingState>([]);
 const columnFilters = ref<ColumnFiltersState>([]);
-const columnVisibility = ref<VisibilityState>({});
+const columnVisibility = ref<VisibilityState>({
+    Currency: false,
+    'Billing Method': false,
+});
 const rowSelection = ref({});
 const expanded = ref<ExpandedState>({});
 
