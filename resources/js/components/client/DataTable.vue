@@ -15,6 +15,7 @@ import {
     getSortedRowModel,
     useVueTable,
 } from '@tanstack/vue-table';
+import { UserPlus } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -78,6 +79,10 @@ const table = useVueTable({
                 @update:model-value="table.getColumn('company_name')?.setFilterValue($event)"
             />
             <div class="ml-auto flex-row flex-wrap space-x-1">
+                <Button variant="outline">
+                    <UserPlus class="mr-1 h-4 w-4" />
+                    Add
+                </Button>
                 <DataTableFilterOption />
                 <DataTableViewOptions :table="table" />
             </div>
