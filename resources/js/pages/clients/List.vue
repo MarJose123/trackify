@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem, Client, ClientsData } from '@/types';
+import { type BreadcrumbItem } from '@/types';
+import { type ClientsData, Client } from '@/types/clients';
 import { Head, usePage } from '@inertiajs/vue3';
 
 import DataTable from '@/components/client/DataTable.vue';
