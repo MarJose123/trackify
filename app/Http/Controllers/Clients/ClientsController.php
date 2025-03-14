@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Clients;
 
+use App\Enums\BillingMethod;
 use App\Enums\CurrencyCode;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
@@ -27,6 +28,7 @@ class ClientsController extends Controller
             'fields' => [
                 'status' => Status::cases(),
                 'currency' => CurrencyCode::cases(),
+                'billing_method' => BillingMethod::cases(),
             ]
         ]);
     }

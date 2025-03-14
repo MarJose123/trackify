@@ -1,5 +1,6 @@
-import { SharedData } from '@/types/index';
+import { Auth, SharedData } from '@/types/index';
 import { Pagination } from '@/types/pagination';
+import type { PageProps } from '@inertiajs/core';
 
 export interface Client {
     id: string;
@@ -9,6 +10,14 @@ export interface Client {
     company_name: string;
     status: string;
     rate: number;
+}
+
+export interface CreationSharedData extends PageProps {
+    fields: {
+        status: any[],
+        currency: any[],
+        billing_method: any[]
+    };
 }
 
 export interface ClientsData extends SharedData {
