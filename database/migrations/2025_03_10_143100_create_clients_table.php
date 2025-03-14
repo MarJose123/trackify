@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('company_name');
             $table->string('currency');
+            $table->float('rate');
             $table->string('billing_method');
             $table->string('status');
             $table->timestamps();

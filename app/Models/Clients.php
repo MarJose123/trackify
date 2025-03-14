@@ -20,6 +20,7 @@ class Clients extends Model
         'currency',
         'billing_method',
         'company_name',
+        'rate',
         'status',
     ];
 
