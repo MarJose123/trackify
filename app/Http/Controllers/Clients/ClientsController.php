@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Clients;
 
 use App\Enums\BillingMethod;
 use App\Enums\CurrencyCode;
+use App\Enums\DefaultWindowSize;
 use App\Enums\Status;
+use App\Enums\WindowName;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\Clients;
@@ -12,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Native\Laravel\Facades\Window;
 
 class ClientsController extends Controller
 {
@@ -25,6 +28,10 @@ class ClientsController extends Controller
 
         if ($request->wantsJson()) {
             return response()->json($clients);
+        }
+
+        if(!app()->runningInConsole() && !app()->runningUnitTests()) {
+            Window::resize(DefaultWindowSize::WIDTH->getSize() + 300, DefaultWindowSize::HEIGHT->getSize(), WindowName::MAIN->getId());
         }
 
         return Inertia::render('clients/List', [
