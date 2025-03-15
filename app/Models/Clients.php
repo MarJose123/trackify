@@ -7,6 +7,7 @@ use App\Enums\CurrencyCode;
 use App\Enums\Status as StatusEnum;
 use App\Models\Filters\Clients\Currency as CurrencyFilter;
 use App\Models\Filters\Clients\Status as StatusFilter;
+use App\Models\Scopes\MyOwnRecordScope;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,5 +48,13 @@ class Clients extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The "booted" method of the model for Global scope.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new MyOwnRecordScope);
     }
 }
