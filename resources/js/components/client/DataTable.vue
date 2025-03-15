@@ -91,7 +91,6 @@ const table = useVueTable({
 });
 
 watch(pagination, (val) => {
-    console.log('pagination', val)
     eventBus.emit('client-table-pagination-change', val)
 })
 </script>
