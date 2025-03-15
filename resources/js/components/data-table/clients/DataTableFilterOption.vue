@@ -27,8 +27,8 @@ onMounted(() => {
         .then((resp) => (availableFilter.value = resp.data));
 });
 
-watch(filter, () => {
-    eventBus.emit('client-table-filter', filter);
+watch(filter, (value) => {
+    eventBus.emit('client-table-filter', value);
 });
 </script>
 
