@@ -4,7 +4,7 @@ import { type BreadcrumbItem } from '@/types';
 import { type ClientsData } from '@/types/clients';
 import { Head, usePage } from '@inertiajs/vue3';
 
-import DataTable from '@/components/data-table/client/DataTable.vue';
+import DataTable from '@/components/data-table/clients/DataTable.vue';
 import eventBus from '@/lib/eventBus';
 import { clientColumns } from '@/pages/clients/columns';
 import { ref } from 'vue';

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TData, TValue">
-import DataTableFilterOption from '@/components/data-table/client/DataTableFilterOption.vue';
+import DataTableFilterOption from '@/components/data-table/clients/DataTableFilterOption.vue';
 import DataTableViewOptions from '@/components/ui/DataTableViewOptions.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
