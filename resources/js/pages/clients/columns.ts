@@ -1,6 +1,6 @@
 import ClientsDataTableDropDown from '@/components/client/DataTableDropDown.vue';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Client } from '@/types';
+import { Client } from '@/types/clients';
 import { ColumnDef } from '@tanstack/vue-table';
 import { h } from 'vue';
 
@@ -30,44 +30,46 @@ export const clientColumns: ColumnDef<Client>[] = [
     },
     {
         accessorKey: 'name',
-        id: 'Name',
         enableHiding: false,
         header: () => h('div', {}, 'Name'),
         cell: ({ row }) => h('div', {}, row.getValue('name')),
     },
     {
         accessorKey: 'status',
-        id: 'Status',
         enableHiding: false,
         header: () => h('div', {}, 'Status'),
         cell: ({ row }) => h('div', {}, row.getValue('status')),
     },
     {
         accessorKey: 'rate',
-        id: 'Rate',
         enableHiding: false,
         header: () => h('div', {}, 'Rate'),
         cell: ({ row }) => {
             const amount = Number.parseFloat(row.getValue('rate'));
-            const currency = row.getValue('currency') as string;
+            const currencyCode = row.getValue('currency') as string;
             const formatted = new Intl.NumberFormat('en-US', {
                 style: 'currency',
-                currency,
+                currency: currencyCode,
             }).format(amount);
             return h('div', {}, formatted);
         },
     },
     {
         accessorKey: 'currency',
-        id: 'Currency',
         enableHiding: true,
+        meta: {
+            displayName: 'Currency',
+        },
         header: () => h('div', {}, 'Currency'),
         cell: ({ row }) => h('div', {}, row.getValue('currency')),
     },
     {
         accessorKey: 'billing_method',
-        id: 'Billing Method',
+        id: 'billing_method',
         enableHiding: true,
+        meta: {
+            displayName: 'Billing Method',
+        },
         header: () => h('div', {}, 'Billing'),
         cell: ({ row }) => h('div', {}, row.getValue('billing_method')),
     },

@@ -40,7 +40,7 @@ const columns = computed(() => props.table.getAllColumns().filter((column) => ty
                 :checked="column.getIsVisible()"
                 @update:checked="(value) => column.toggleVisibility(!!value)"
             >
-                {{ column.id }}
+                {{ column.columnDef.meta?.displayName as string }}
             </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
     </DropdownMenu>
