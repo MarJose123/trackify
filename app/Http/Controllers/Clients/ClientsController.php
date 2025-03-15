@@ -16,14 +16,11 @@ class ClientsController extends Controller
 {
     public function list(Request $request): Response
     {
-        $request->validate([
-            /** @query */
-            'per_page' => 'nullable|integer|min:15|max:200',
-        ]);
-
         $perPage = $request->query('per_page', 200);
-
-        $clients = Clients::query()->paginate(perPage: $perPage);
+        $clients = Clients::query()
+            ->filterByQueryString()
+            ->orderBy('created_at', 'desc')
+            ->paginate(perPage: $perPage)->appends(request()->query());
 
         return Inertia::render('clients/List', [
             'clients' => $clients,
