@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->prefix('clients')->group(function () {
     Route::get('/', [ClientsController::class, 'list'])->name('clients.list');
     Route::get('/create', [ClientsController::class, 'create'])->name('clients.create');
+    Route::post('/create', [ClientsController::class, 'store'])->name('clients.store');
 
     // axios route
     Route::prefix('_api')->group(function () {
