@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Enums\BillingMethod;
 use App\Enums\CurrencyCode;
-use App\Enums\Status;
-use App\Models\Filters\Clients\CurrencyFilter;
-use App\Models\Filters\Clients\StatusFilter;
+use App\Enums\Status as StatusEnum;
+use App\Models\Filters\Clients\Currency as CurrencyFilter;
+use App\Models\Filters\Clients\Status as StatusFilter;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,12 +30,12 @@ class Clients extends Model
     protected $casts = [
         'currency' => CurrencyCode::class,
         'billing_method' => BillingMethod::class,
-        'status' => Status::class,
+        'status' => StatusEnum::class,
     ];
 
     protected array $filters = [
-        StatusFilter::class,
         CurrencyFilter::class,
+        StatusFilter::class,
     ];
 
     public function user(): BelongsTo
