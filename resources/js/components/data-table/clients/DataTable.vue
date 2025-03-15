@@ -84,7 +84,7 @@ watch(pagination, (val) => {
     <div class="w-full">
         <div class="flex items-center gap-2 py-4">
             <Input
-                class="max-w-sm"
+                class="max-w-[250px]"
                 placeholder="Search Company..."
                 :model-value="table.getColumn('company_name')?.getFilterValue() as string"
                 @update:model-value="table.getColumn('company_name')?.setFilterValue($event)"
