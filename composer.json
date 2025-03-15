@@ -76,6 +76,16 @@
         "format": [
             "Composer\\Config::disableProcessTimeout",
             "npm run format",
+            "npm run lint",
+            "./vendor/bin/pint"
+        ],
+        "format:fe": [
+            "Composer\\Config::disableProcessTimeout",
+            "npm run format",
+            "npm run lint"
+        ],
+        "format:be": [
+            "Composer\\Config::disableProcessTimeout",
             "./vendor/bin/pint"
         ],
         "test": [
