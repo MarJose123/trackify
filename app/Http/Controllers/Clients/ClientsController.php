@@ -30,7 +30,7 @@ class ClientsController extends Controller
             return response()->json($clients);
         }
 
-        if(!app()->runningInConsole() && !app()->runningUnitTests()) {
+        if (! app()->runningInConsole() && ! app()->runningUnitTests()) {
             Window::resize(DefaultWindowSize::WIDTH->getSize() + 300, DefaultWindowSize::HEIGHT->getSize(), WindowName::MAIN->getId());
         }
 
