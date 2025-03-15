@@ -15,6 +15,17 @@
 - **Reporting**: Get detailed insights into your work hours and earnings.
 - **Integration**: Sync your data with popular tools like Google Calendar and PayPal.
 
+## Timeline
+
+| **Feature Name**         | **Status** | **Remarks**          |
+|--------------------------|------------|----------------------|
+| Client Management        | 🍳🧑‍🍳    | Cooking              |
+| Project Management       | 🏗️        | _Added to Milestone_ |
+| Time Tracking Management | 🏗️        | _Added to Milestone_ |
+| Timesheet Management     | 🏗️        | _Added to Milestone_ |
+| Invoice Management       | 🏗️        | _Added to Milestone_ |
+| Integration Management   | 🏗️        | _Added to Milestone_ |
+
 
 ## Changelog
 
