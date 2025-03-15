@@ -2,12 +2,12 @@
 
 namespace App\Models\Filters\Clients;
 
-use App\Enums\CurrencyCode;
+use App\Enums\Status as StatusEnum;
 use Lacodix\LaravelModelFilter\Filters\EnumFilter;
 
-class CurrencyFilter extends EnumFilter
+class Status extends EnumFilter
 {
     protected string $field = 'status';
 
-    protected string $enum = CurrencyCode::class;
+    protected string $enum = StatusEnum::class;
 }
