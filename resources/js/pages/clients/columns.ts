@@ -1,4 +1,4 @@
-import ClientsDataTableDropDown from '@/components/client/DataTableDropDown.vue';
+import ClientsDataTableDropDown from '@/components/data-table/client/DataTableDropDown.vue';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Client } from '@/types/clients';
 import { ColumnDef } from '@tanstack/vue-table';
