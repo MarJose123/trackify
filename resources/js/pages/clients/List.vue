@@ -5,11 +5,11 @@ import { type ClientsData } from '@/types/clients';
 import { Head, usePage } from '@inertiajs/vue3';
 
 import DataTable from '@/components/data-table/clients/DataTable.vue';
+import { useToast } from '@/components/ui/toast';
+import { api } from '@/lib/axios';
 import eventBus from '@/lib/eventBus';
 import { clientColumns } from '@/pages/clients/columns';
 import { ref } from 'vue';
-import { api } from '@/lib/axios';
-import { useToast } from '@/components/ui/toast';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,19 +25,24 @@ eventBus.on('*', (type, filter) => {
     console.log(type, filter);
 
     // Table Filter
-    if(type.toString().includes('client-table-filter')){
-        api().get(route('clients.list',{
-            ...(filter?.status !== undefined && {status: filter?.status }),
-            ...(filter?.currency !== undefined && {currency: filter?.currency }),
-        })).then(resp => {
-            clientsPagination.value = resp.data;
-        }).catch(() => {
-            useToast().toast({
-                title: 'Uh oh! Something went wrong.',
-                description: 'There was a problem with your request when applying filters.',
-                variant: 'destructive',
+    if (type.toString().includes('client-table-filter')) {
+        api()
+            .get(
+                route('clients.list', {
+                    ...(filter?.status !== undefined && { status: filter?.status }),
+                    ...(filter?.currency !== undefined && { currency: filter?.currency }),
+                }),
+            )
+            .then((resp) => {
+                clientsPagination.value = resp.data;
+            })
+            .catch(() => {
+                useToast().toast({
+                    title: 'Uh oh! Something went wrong.',
+                    description: 'There was a problem with your request when applying filters.',
+                    variant: 'destructive',
+                });
             });
-        })
     }
 
     // Table pagination
@@ -51,13 +56,14 @@ eventBus.on('*', (type, filter) => {
             )
             .then((resp) => {
                 clientsPagination.value = resp.data;
-            }).catch(() => {
-            useToast().toast({
-                title: 'Uh oh! Something went wrong.',
-                description: 'There was a problem with your request when updating the table.',
-                variant: 'destructive',
+            })
+            .catch(() => {
+                useToast().toast({
+                    title: 'Uh oh! Something went wrong.',
+                    description: 'There was a problem with your request when updating the table.',
+                    variant: 'destructive',
+                });
             });
-        });
     }
 });
 </script>
