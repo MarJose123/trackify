@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Lacodix\LaravelModelFilter\Traits\HasFilters;
+use Lacodix\LaravelModelFilter\Traits\IsSearchable;
 
 class Clients extends Model
 {
-    use HasFactory, HasFilters, HasUuids;
+    use HasFactory, HasFilters, HasUuids, IsSearchable;
 
     protected $fillable = [
         'user_id',
@@ -36,6 +37,11 @@ class Clients extends Model
     protected array $filters = [
         CurrencyFilter::class,
         StatusFilter::class,
+    ];
+
+    protected array $searchable = [
+        'company_name',
+        'name',
     ];
 
     public function user(): BelongsTo
