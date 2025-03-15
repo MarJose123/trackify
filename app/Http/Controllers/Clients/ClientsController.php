@@ -23,6 +23,7 @@ class ClientsController extends Controller
         $perPage = $request->query('per_page', 5);
         $clients = Clients::query()
             ->filterByQueryString()
+            ->searchByQueryString()
             ->orderBy('created_at', 'desc')
             ->paginate(perPage: $perPage)->appends(request()->query());
 

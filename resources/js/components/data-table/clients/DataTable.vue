@@ -9,24 +9,25 @@ import eventBus from '@/lib/eventBus';
 import { cn, valueUpdater } from '@/lib/utils';
 import { Pagination } from '@/types/pagination';
 import { router } from '@inertiajs/vue3';
-import type { ColumnDef, ColumnFiltersState, ExpandedState, SortingState, VisibilityState } from '@tanstack/vue-table';
+import type { ColumnDef, VisibilityState } from '@tanstack/vue-table';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getSortedRowModel, useVueTable } from '@tanstack/vue-table';
-import { UserPlus } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
+import { refDebounced } from '@vueuse/core';
+import { Search, UserPlus } from 'lucide-vue-next';
+import { ref, shallowRef, watch } from 'vue';
 
 const props = defineProps<{
     columns: ColumnDef<any>[];
     data: Pagination;
 }>();
 
-const sorting = ref<SortingState>([]);
-const columnFilters = ref<ColumnFiltersState>([]);
+const columnFilters = shallowRef<any | undefined>(undefined);
+const debouncedColumnFilters = refDebounced(columnFilters, 1000);
+
 const columnVisibility = ref<VisibilityState>({
     Currency: false,
     'Billing Method': false,
 });
 const rowSelection = ref({});
-const expanded = ref<ExpandedState>({});
 const pagination = ref({
     pageIndex: 0,
     pageSize: 5,
@@ -40,34 +41,21 @@ const table = useVueTable({
         return props.columns;
     },
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(), //not needed for server-side pagination
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-    onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
     onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
     onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
-    onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
     onPaginationChange: (updateOrValue) => valueUpdater(updateOrValue, pagination),
     manualPagination: true,
     rowCount: props.data.total,
 
     state: {
-        get sorting() {
-            return sorting.value;
-        },
-        get columnFilters() {
-            return columnFilters.value;
-        },
         get columnVisibility() {
             return columnVisibility.value;
         },
         get rowSelection() {
             return rowSelection.value;
-        },
-        get expanded() {
-            return expanded.value;
         },
         get pagination() {
             return pagination.value;
@@ -78,17 +66,20 @@ const table = useVueTable({
 watch(pagination, (val) => {
     eventBus.emit('client-table-pagination-change', val);
 });
+watch(debouncedColumnFilters, (val) => {
+    eventBus.emit('client-table-search', val);
+});
 </script>
 
 <template>
     <div class="w-full">
         <div class="flex items-center gap-2 py-4">
-            <Input
-                class="max-w-[250px]"
-                placeholder="Search Company..."
-                :model-value="table.getColumn('company_name')?.getFilterValue() as string"
-                @update:model-value="table.getColumn('company_name')?.setFilterValue($event)"
-            />
+            <div class="relative w-full max-w-sm items-center">
+                <Input class="max-w-[250px] pl-9" placeholder="Search Company or name..." v-model:model-value="columnFilters" />
+                <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
+                    <Search class="size-6 text-muted-foreground" />
+                </span>
+            </div>
             <div class="ml-auto flex-row flex-wrap space-x-1">
                 <Button variant="outline" @click.prevent="router.visit(route('clients.create'))">
                     <UserPlus class="mr-1 h-4 w-4" />
