@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData, TValue">
 import DataTableFilterOption from '@/components/data-table/clients/DataTableFilterOption.vue';
 import DataTablePagination from '@/components/data-table/clients/DataTablePagination.vue';
-import DataTableViewOptions from '@/components/ui/DataTableViewOptions.vue';
+import DataTableViewOptions from '@/components/data-table/clients/DataTableViewOptions.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
