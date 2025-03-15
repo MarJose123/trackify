@@ -23,7 +23,7 @@ class ClientsController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(perPage: $perPage)->appends(request()->query());
 
-        if($request->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json($clients);
         }
 
