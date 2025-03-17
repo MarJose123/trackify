@@ -15,6 +15,10 @@ export interface Client {
 export interface ShowSharedData extends PageProps {
     client: Client;
 }
+export interface EditSharedData extends PageProps {
+    client: Client;
+    fields: CreationSharedData['fields']
+}
 
 export interface CreationSharedData extends PageProps {
     fields: {
