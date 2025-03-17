@@ -1,4 +1,4 @@
-import { SharedData } from '@/types/index';
+import { flashNotification, SharedData } from '@/types/index';
 import { Pagination } from '@/types/pagination';
 import type { PageProps } from '@inertiajs/core';
 
@@ -14,13 +14,16 @@ export interface Client {
 
 export interface ShowSharedData extends PageProps {
     client: Client;
+    notification?: flashNotification;
 }
 export interface EditSharedData extends PageProps {
     client: Client;
     fields: CreationSharedData['fields']
+    notification?: flashNotification;
 }
 
 export interface CreationSharedData extends PageProps {
+    notification?: flashNotification;
     fields: {
         status: any[];
         currency: any[];
