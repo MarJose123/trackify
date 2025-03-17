@@ -12,8 +12,10 @@ export interface BreadcrumbItem {
 }
 
 export interface flashNotification {
-    error?: any;
-    success?: any;
+    notification?: {
+        error?: any;
+        success?: any;
+    };
 }
 
 export interface NavItem {

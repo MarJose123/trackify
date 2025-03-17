@@ -14,16 +14,16 @@ export interface Client {
 
 export interface ShowSharedData extends PageProps {
     client: Client;
-    notification?: flashNotification;
+    notification?: flashNotification['notification'];
 }
 export interface EditSharedData extends PageProps {
     client: Client;
     fields: CreationSharedData['fields'];
-    notification?: flashNotification;
+    notification?: flashNotification['notification'];
 }
 
 export interface CreationSharedData extends PageProps {
-    notification?: flashNotification;
+    notification?: flashNotification['notification'];
     fields: {
         status: any[];
         currency: any[];
