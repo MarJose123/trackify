@@ -9,7 +9,7 @@ Route::middleware(['auth'])->prefix('clients')->group(function () {
     Route::post('/create', [ClientsController::class, 'store'])->name('clients.store');
     Route::get('/show/{client}', [ClientsController::class, 'show'])->name('clients.show');
     Route::get('/edit/{client}', [ClientsController::class, 'edit'])->name('clients.edit');
-    Route::put('/update/{client}', [ClientsController::class, 'edit'])->name('clients.update');
+    Route::put('/update/{client}', [ClientsController::class, 'update'])->name('clients.update');
 
     // axios route
     Route::prefix('_api')->group(function () {
