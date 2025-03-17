@@ -58,11 +58,22 @@ class ClientsController extends Controller
             ...$request->validated(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Client created',
-            'description' => sprintf('Company Name %s has been saved.', $request->company_name),
-        ], \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Client created',
+                'description' => sprintf('Client %s has been saved.', $request->name),
+            ], \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
+        }
+
+        $request->session()->flash('notification', [
+            'success' => [
+                'title' => sprintf('Client %s saved', $request->name),
+                'description' => sprintf('Client %s has been created successfully.', $request->name),
+            ],
+        ]);
+
+        return $this->list(new Request);
     }
 
     public function show(Clients $client)
@@ -90,12 +101,37 @@ class ClientsController extends Controller
         $client->update($request->validated());
 
         $request->session()->flash('notification', [
-            'success' => sprintf('Client %s has been updated successfully.', $client->company_name),
+            'success' => [
+                'title' => sprintf('Client %s updated', $client->name),
+                'description' => sprintf('Client %s has been updated successfully.', $client->company_name),
+            ],
         ]);
 
         return Inertia::render('clients/Show', [
             'client' => $client,
         ]);
+    }
+
+    public function destroy(Clients $client, Request $request)
+    {
+        $clientName = $client->name;
+        $client->delete();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Client has been deleted successfully.',
+            ]);
+        }
+
+        $request->session()->flash('notification', [
+            'success' => [
+                'title' => sprintf('Client %s deleted', $clientName),
+                'description' => sprintf('Client %s has been deleted successfully.', $clientName),
+            ],
+        ]);
+
+        return to_route('clients.list');
     }
 
     public function tableFilterStatus()
