@@ -111,7 +111,10 @@ watch(debouncedColumnFilters, (val) => {
                 <TableBody>
                     <template v-if="table.getRowModel().rows?.length">
                         <template v-for="row in table.getRowModel().rows" :key="row.id">
-                            <TableRow :data-state="row.getIsSelected() ? 'selected' : undefined">
+                            <TableRow
+                                :data-state="row.getIsSelected() ? 'selected' : undefined"
+                                @click.stop="router.visit(route('clients.show', row.original.id))"
+                            >
                                 <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                                     <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
                                 </TableCell>
