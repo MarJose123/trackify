@@ -75,7 +75,6 @@ const { handleSubmit, isSubmitting, isFieldDirty, setFieldValue, resetForm } = u
 });
 
 const onSubmit = handleSubmit(async (values) => {
-    console.log('canCreateAnother.value', canCreateAnother.value);
     await api()
         .post(route('clients.store'), values, {
             headers: {
@@ -83,7 +82,6 @@ const onSubmit = handleSubmit(async (values) => {
             },
         })
         .then((resp) => {
-            console.log(resp);
             if (canCreateAnother.value) {
                 resetForm();
                 canCreateAnother.value = false;
