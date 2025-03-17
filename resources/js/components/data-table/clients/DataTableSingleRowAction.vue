@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -37,6 +48,27 @@ function copy(id: string) {
             <DropdownMenuItem @click="copy(client.id)"> Copy Client ID</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem @click="router.visit(route('clients.show', client.id))">View Client</DropdownMenuItem>
+            <DropdownMenuItem>
+                <AlertDialog>
+                    <AlertDialogTrigger @click.stop>Delete Client</AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the record and its related record.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                                :class="buttonVariants({ variant: 'destructive' })"
+                                @click="router.delete(route('clients.destroy', client.id))"
+                                >Continue
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
 </template>

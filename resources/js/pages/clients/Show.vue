@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -17,7 +28,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('clients.list'),
     },
     {
-        title: `Client - ${page.props.client.company_name}`,
+        title: `${page.props.client.company_name}`,
         href: route('clients.show', page.props.client.id),
     },
 ];
@@ -33,12 +44,6 @@ onMounted(() => {
         });
     }
 });
-
-const deleteRecord = (id: string) => {
-    router.delete(route('clients.destroy', id), {
-        onBefore: () => confirm('Are you sure you want to delete this record?'),
-    });
-};
 </script>
 
 <template>
@@ -51,7 +56,28 @@ const deleteRecord = (id: string) => {
                     <div />
                     <div class="grid w-full max-w-sm items-center gap-1.5">
                         <div class="flex w-full flex-row-reverse gap-2">
-                            <Button variant="destructive" class="max-w-sm" @click.stop="deleteRecord(client.id)"> Delete </Button>
+                            <AlertDialog>
+                                <AlertDialogTrigger>
+                                    <Button variant="destructive" class="max-w-sm">Delete</Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete your account and remove your data from our
+                                            servers.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction
+                                            :class="buttonVariants({ variant: 'destructive' })"
+                                            @click="router.delete(route('clients.destroy', client.id))"
+                                            >Continue</AlertDialogAction
+                                        >
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                             <Button variant="outline" class="max-w-sm" @click.stop="router.visit(route('clients.edit', client.id))"> Edit </Button>
                         </div>
                     </div>
