@@ -14,6 +14,7 @@ import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, 
 import { refDebounced } from '@vueuse/core';
 import { Search, UserPlus } from 'lucide-vue-next';
 import { ref, shallowRef, watch } from 'vue';
+import DataTableBulkAction from '@/components/data-table/clients/DataTableBulkAction.vue';
 
 const props = defineProps<{
     columns: ColumnDef<any>[];
@@ -81,6 +82,7 @@ watch(debouncedColumnFilters, (val) => {
                 </span>
             </div>
             <div class="ml-auto flex-row flex-wrap space-x-1">
+                <DataTableBulkAction :table="table" v-if="table.getFilteredSelectedRowModel().rows.length > 0" />
                 <Button variant="outline" @click.prevent="router.visit(route('clients.create'))">
                     <UserPlus class="mr-1 h-4 w-4" />
                     Add
