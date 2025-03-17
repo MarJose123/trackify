@@ -8,8 +8,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-vue-next';
 import { router } from '@inertiajs/vue3';
+import { MoreHorizontal } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
 defineProps<{
     client: {
@@ -19,22 +20,23 @@ defineProps<{
 
 function copy(id: string) {
     navigator.clipboard.writeText(id);
+    toast('Client ID has been copied to clipboard.');
 }
 </script>
 
 <template>
     <DropdownMenu>
         <DropdownMenuTrigger as-child>
-            <Button variant="ghost" class="h-8 w-8 p-0">
+            <Button variant="ghost" class="h-8 w-8 p-0" @click.stop>
                 <span class="sr-only">Open menu</span>
                 <MoreHorizontal class="h-4 w-4" />
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem @click="copy(client.id)"> Copy Client ID </DropdownMenuItem>
+            <DropdownMenuItem @click="copy(client.id)"> Copy Client ID</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem @click="router.visit(route('clients.show',client.id))">View Client</DropdownMenuItem>
+            <DropdownMenuItem @click="router.visit(route('clients.show', client.id))">View Client</DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
 </template>
