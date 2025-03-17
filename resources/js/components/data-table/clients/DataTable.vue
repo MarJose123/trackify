@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="TData, TValue">
+import DataTableBulkAction from '@/components/data-table/clients/DataTableBulkAction.vue';
 import DataTableFilterOption from '@/components/data-table/clients/DataTableFilterOption.vue';
 import DataTablePagination from '@/components/data-table/clients/DataTablePagination.vue';
 import DataTableViewOptions from '@/components/data-table/clients/DataTableViewOptions.vue';
@@ -14,7 +15,6 @@ import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, 
 import { refDebounced } from '@vueuse/core';
 import { Search, UserPlus } from 'lucide-vue-next';
 import { ref, shallowRef, watch } from 'vue';
-import DataTableBulkAction from '@/components/data-table/clients/DataTableBulkAction.vue';
 
 const props = defineProps<{
     columns: ColumnDef<any>[];

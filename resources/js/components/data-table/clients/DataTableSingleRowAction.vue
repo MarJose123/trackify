@@ -19,6 +19,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { api } from '@/lib/axios';
 import { router } from '@inertiajs/vue3';
 import { MoreHorizontal } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
@@ -33,10 +34,15 @@ function copy(id: string) {
     navigator.clipboard.writeText(id);
     toast('Client ID has been copied to clipboard.');
 }
+
+const deleteRecord = async (id: string) => {
+    await api().delete(route('clients.destroy', id), { headers: { accept: '*/*' } });
+    router.visit(route('clients.list'));
+};
 </script>
 
 <template>
-    <DropdownMenu>
+    <DropdownMenu :modal="false">
         <DropdownMenuTrigger as-child>
             <Button variant="ghost" class="h-8 w-8 p-0" @click.stop>
                 <span class="sr-only">Open menu</span>
@@ -61,13 +67,7 @@ function copy(id: string) {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                                :class="buttonVariants({ variant: 'destructive' })"
-                                @click="router.delete(route('clients.destroy', client.id), {
-                                    onSuccess: () => router.visit(route('clients.list'), {
-                                        only: ['clients']
-                                    })
-                                })"
+                            <AlertDialogAction :class="buttonVariants({ variant: 'destructive' })" @click="deleteRecord(client.id)"
                                 >Continue
                             </AlertDialogAction>
                         </AlertDialogFooter>
