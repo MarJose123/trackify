@@ -9,7 +9,8 @@ import { useToast } from '@/components/ui/toast';
 import { api } from '@/lib/axios';
 import eventBus from '@/lib/eventBus';
 import { clientColumns } from '@/pages/clients/columns';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,6 +21,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const page = usePage<ClientsData>();
 const clientsPagination = ref(page.props.clients);
+
+onMounted(() => {
+    const flashNotification = page.props.notification?.success;
+
+    if (flashNotification) {
+        toast(flashNotification.title, {
+            description: flashNotification.description,
+        });
+    }
+});
 
 eventBus.on('*', (type, filter) => {
     console.log(type, filter);

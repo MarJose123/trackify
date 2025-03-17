@@ -10,6 +10,7 @@ Route::middleware(['auth'])->prefix('clients')->group(function () {
     Route::get('/show/{client}', [ClientsController::class, 'show'])->name('clients.show');
     Route::get('/edit/{client}', [ClientsController::class, 'edit'])->name('clients.edit');
     Route::put('/update/{client}', [ClientsController::class, 'update'])->name('clients.update');
+    Route::delete('/delete/{client}', [ClientsController::class, 'destroy'])->name('clients.destroy');
 
     // axios route
     Route::prefix('_api')->group(function () {

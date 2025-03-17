@@ -6,6 +6,8 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { ShowSharedData } from '@/types/clients';
 import { Head, router, usePage } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
+import { toast } from 'vue-sonner';
 
 const page = usePage<ShowSharedData>();
 
@@ -21,6 +23,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const client = page.props.client;
+
+onMounted(() => {
+    const flashNotification = page.props.notification?.success;
+
+    if (flashNotification) {
+        toast(flashNotification.title, {
+            description: flashNotification.description,
+        });
+    }
+});
+
+const deleteRecord = (id: string) => {
+    router.delete(route('clients.destroy', id), {
+        onBefore: () => confirm('Are you sure you want to delete this record?'),
+    });
+};
 </script>
 
 <template>
@@ -32,7 +50,8 @@ const client = page.props.client;
                 <div class="grid auto-rows-min gap-3 gap-y-4 md:grid-cols-2">
                     <div />
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <div class="flex w-full flex-row-reverse">
+                        <div class="flex w-full flex-row-reverse gap-2">
+                            <Button variant="destructive" class="max-w-sm" @click.stop="deleteRecord(client.id)"> Delete </Button>
                             <Button variant="outline" class="max-w-sm" @click.stop="router.visit(route('clients.edit', client.id))"> Edit </Button>
                         </div>
                     </div>

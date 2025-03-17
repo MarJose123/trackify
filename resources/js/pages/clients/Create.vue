@@ -9,11 +9,11 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { api } from '@/lib/axios';
 import { type BreadcrumbItem } from '@/types';
 import { CreationSharedData } from '@/types/clients';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import { toTypedSchema } from '@vee-validate/zod';
 import { Loader2 } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
-import { h } from 'vue';
+import { h, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import * as z from 'zod';
 
@@ -27,6 +27,9 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('clients.list'),
     },
 ];
+
+const page = usePage<CreationSharedData>();
+const canCreateAnother = ref<boolean>(false);
 
 const formSchema = toTypedSchema(
     z.object({
@@ -72,14 +75,25 @@ const { handleSubmit, isSubmitting, isFieldDirty, setFieldValue, resetForm } = u
 });
 
 const onSubmit = handleSubmit(async (values) => {
+    console.log('canCreateAnother.value', canCreateAnother.value);
     await api()
-        .post(route('clients.store'), values)
+        .post(route('clients.store'), values, {
+            headers: {
+                accept: canCreateAnother.value === true ? 'application/json' : '*/*',
+            },
+        })
         .then((resp) => {
-            if (resp.status === 201) {
-                toast(resp.data.message, {
-                    description: resp.data.description,
-                });
+            console.log(resp);
+            if (canCreateAnother.value) {
                 resetForm();
+                canCreateAnother.value = false;
+                if (resp.status === 201) {
+                    toast(resp.data.message, {
+                        description: resp.data.description,
+                    });
+                }
+            } else {
+                router.visit(route('clients.list'));
             }
         })
         .catch((resp) => {
@@ -109,8 +123,6 @@ const onSubmit = handleSubmit(async (values) => {
             }
         });
 });
-
-const page = usePage<CreationSharedData>();
 </script>
 
 <template>
@@ -247,10 +259,18 @@ const page = usePage<CreationSharedData>();
                 <div class="grid auto-rows-min gap-3 gap-y-4 md:grid-cols-2">
                     <div />
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <div class="flex w-full flex-row-reverse">
-                            <Button type="submit" :disabled="isSubmitting">
+                        <div class="flex w-full flex-row-reverse gap-2">
+                            <Button type="button" :disabled="isSubmitting" variant="outline" @click.prevent="router.visit(route('clients.list'))">
                                 <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
-                                {{ isSubmitting ? 'Saving..' : 'Save' }}
+                                Cancel
+                            </Button>
+                            <Button type="submit" :disabled="isSubmitting" variant="outline" @click="canCreateAnother = false">
+                                <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
+                                {{ isSubmitting ? 'Creating..' : 'Create' }}
+                            </Button>
+                            <Button type="submit" :disabled="isSubmitting" variant="outline" @click="canCreateAnother = true">
+                                <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
+                                {{ isSubmitting ? 'Creating..' : 'Create & Another' }}
                             </Button>
                         </div>
                     </div>
