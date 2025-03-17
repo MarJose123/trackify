@@ -63,7 +63,11 @@ function copy(id: string) {
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
                                 :class="buttonVariants({ variant: 'destructive' })"
-                                @click="router.delete(route('clients.destroy', client.id))"
+                                @click="router.delete(route('clients.destroy', client.id), {
+                                    onSuccess: () => router.visit(route('clients.list'), {
+                                        only: ['clients']
+                                    })
+                                })"
                                 >Continue
                             </AlertDialogAction>
                         </AlertDialogFooter>
