@@ -9,6 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-vue-next';
+import { router } from '@inertiajs/vue3';
 
 defineProps<{
     client: {
@@ -33,7 +34,7 @@ function copy(id: string) {
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem @click="copy(client.id)"> Copy Client ID </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View Client</DropdownMenuItem>
+            <DropdownMenuItem @click="router.visit(route('clients.show'))">View Client</DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
 </template>
