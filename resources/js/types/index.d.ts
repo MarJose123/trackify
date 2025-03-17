@@ -11,7 +11,6 @@ export interface BreadcrumbItem {
     href: string;
 }
 
-
 export interface flashNotification {
     error?: any;
     success?: any;

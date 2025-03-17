@@ -18,7 +18,7 @@ export interface ShowSharedData extends PageProps {
 }
 export interface EditSharedData extends PageProps {
     client: Client;
-    fields: CreationSharedData['fields']
+    fields: CreationSharedData['fields'];
     notification?: flashNotification;
 }
 
