@@ -34,7 +34,7 @@ function copy(id: string) {
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem @click="copy(client.id)"> Copy Client ID </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem @click="router.visit(route('clients.show'))">View Client</DropdownMenuItem>
+            <DropdownMenuItem @click="router.visit(route('clients.show',client.id))">View Client</DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
 </template>
