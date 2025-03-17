@@ -61,14 +61,14 @@ class ClientsController extends Controller
         if ($request->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Client created',
+                'message' => 'Client Created',
                 'description' => sprintf('Client %s has been saved.', $request->name),
             ], \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
         }
 
         $request->session()->flash('notification', [
             'success' => [
-                'title' => sprintf('Client %s saved', $request->name),
+                'title' => 'Client Created',
                 'description' => sprintf('Client %s has been created successfully.', $request->name),
             ],
         ]);
@@ -102,7 +102,7 @@ class ClientsController extends Controller
 
         $request->session()->flash('notification', [
             'success' => [
-                'title' => sprintf('Client %s updated', $client->name),
+                'title' => 'Client Updated',
                 'description' => sprintf('Client %s has been updated successfully.', $client->company_name),
             ],
         ]);
@@ -117,21 +117,14 @@ class ClientsController extends Controller
         $clientName = $client->name;
         $client->delete();
 
-        if ($request->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Client has been deleted successfully.',
-            ]);
-        }
-
         $request->session()->flash('notification', [
             'success' => [
-                'title' => sprintf('Client %s deleted', $clientName),
+                'title' => 'Client Deleted',
                 'description' => sprintf('Client %s has been deleted successfully.', $clientName),
             ],
         ]);
 
-        return redirect()->route('clients.list');
+        return $this->list(new Request);
     }
 
     public function tableFilterStatus()
