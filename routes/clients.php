@@ -7,6 +7,7 @@ Route::middleware(['auth'])->prefix('clients')->group(function () {
     Route::get('/', [ClientsController::class, 'list'])->name('clients.list');
     Route::get('/create', [ClientsController::class, 'create'])->name('clients.create');
     Route::post('/create', [ClientsController::class, 'store'])->name('clients.store');
+    Route::get('/show/{client}', [ClientsController::class, 'show'])->name('clients.show');
 
     // axios route
     Route::prefix('_api')->group(function () {
