@@ -48,6 +48,7 @@ function copy(id: string) {
             <DropdownMenuItem @click="copy(client.id)"> Copy Client ID</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem @click="router.visit(route('clients.show', client.id))">View Client</DropdownMenuItem>
+            <DropdownMenuItem @click="router.visit(route('clients.edit', client.id))">Edit Client</DropdownMenuItem>
             <DropdownMenuItem>
                 <AlertDialog>
                     <AlertDialogTrigger @click.stop>Delete Client</AlertDialogTrigger>
