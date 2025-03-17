@@ -16,6 +16,7 @@ export const clientColumns: ColumnDef<Client>[] = [
         cell: ({ row }) =>
             h(Checkbox, {
                 checked: row.getIsSelected(),
+                onClick: (e: any) => e.stopPropagation(),
                 'onUpdate:checked': (value) => row.toggleSelected(!!value),
                 ariaLabel: 'Select row',
             }),
