@@ -244,11 +244,16 @@ const page = usePage<CreationSharedData>();
                         </FormField>
                     </div>
                 </div>
-                <div class="flex w-full flex-row-reverse">
-                    <Button type="submit" :disabled="isSubmitting">
-                        <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
-                        {{ isSubmitting ? 'Saving..' : 'Save' }}
-                    </Button>
+                <div class="grid auto-rows-min gap-3 gap-y-4 md:grid-cols-2">
+                    <div />
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <div class="flex w-full flex-row-reverse">
+                            <Button type="submit" :disabled="isSubmitting">
+                                <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
+                                {{ isSubmitting ? 'Saving..' : 'Save' }}
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
