@@ -65,6 +65,13 @@ class ClientsController extends Controller
         ], \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
     }
 
+    public function show(Clients $client)
+    {
+        return Inertia::render('clients/Show', [
+            'client' => $client,
+        ]);
+    }
+
     public function tableFilterStatus()
     {
         return response()->json([
