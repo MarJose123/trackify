@@ -127,6 +127,28 @@ class ClientsController extends Controller
         return $this->list(new Request);
     }
 
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+        ]);
+
+        $clients = collect($request->ids);
+
+        $clients->each(function ($client) use ($request) {
+            Clients::destroy($client);
+        });
+
+        $request->session()->flash('notification', [
+            'success' => [
+                'title' => 'Client Deleted',
+                'description' => 'Client has been deleted successfully.',
+            ],
+        ]);
+
+        return $this->list(new Request);
+    }
+
     public function tableFilterStatus()
     {
         return response()->json([
