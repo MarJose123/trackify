@@ -72,6 +72,32 @@ class ClientsController extends Controller
         ]);
     }
 
+    public function edit(Clients $client)
+    {
+        return Inertia::render('clients/Edit', [
+            'client' => $client,
+            'fields' => [
+                'status' => Status::cases(),
+                'currency' => CurrencyCode::cases(),
+                'billing_method' => BillingMethod::cases(),
+            ],
+        ]);
+
+    }
+
+    public function update(ClientRequest $request, Clients $client)
+    {
+        $client->update($request->validated());
+
+        $request->session()->flash('notification', [
+            'success' => sprintf('Client %s has been updated successfully.', $client->company_name),
+        ]);
+
+        return Inertia::render('clients/Show', [
+            'client' => $client,
+        ]);
+    }
+
     public function tableFilterStatus()
     {
         return response()->json([
