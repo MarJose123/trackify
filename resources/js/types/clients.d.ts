@@ -12,6 +12,10 @@ export interface Client {
     rate: number;
 }
 
+export interface ShowSharedData extends PageProps {
+    client: Client;
+}
+
 export interface CreationSharedData extends PageProps {
     fields: {
         status: any[];
