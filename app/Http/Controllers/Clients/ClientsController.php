@@ -112,12 +112,12 @@ class ClientsController extends Controller
         ]);
     }
 
-    public function destroy(Clients $client, Request $request)
+    public function destroy(Request $request, Clients $client)
     {
         $clientName = $client->name;
         $client->delete();
 
-        if (request()->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Client has been deleted successfully.',
@@ -131,7 +131,7 @@ class ClientsController extends Controller
             ],
         ]);
 
-        return to_route('clients.list');
+        return redirect()->route('clients.list');
     }
 
     public function tableFilterStatus()
