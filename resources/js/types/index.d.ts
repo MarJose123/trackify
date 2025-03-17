@@ -13,8 +13,14 @@ export interface BreadcrumbItem {
 
 export interface flashNotification {
     notification?: {
-        error?: any | boolean | string | number;
-        success?: any | boolean | string;
+        error?: {
+            title: any | string,
+            description?: any | string
+        };
+        success?:{
+            title: any | string,
+            description?: any | string
+        };
     };
 }
 

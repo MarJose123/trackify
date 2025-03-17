@@ -32,6 +32,7 @@ export interface CreationSharedData extends PageProps {
 }
 
 export interface ClientsData extends SharedData {
+    notification?: flashNotification['notification'];
     clients: Pagination & { data: Client[] };
 }
 
