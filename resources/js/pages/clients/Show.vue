@@ -14,6 +14,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { api } from '@/lib/axios';
 import { type BreadcrumbItem } from '@/types';
 import { ShowSharedData } from '@/types/clients';
 import { Head, router, usePage } from '@inertiajs/vue3';
@@ -72,9 +73,13 @@ onMounted(() => {
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction
                                             :class="buttonVariants({ variant: 'destructive' })"
-                                            @click="router.delete(route('clients.destroy', client.id))"
-                                            >Continue</AlertDialogAction
-                                        >
+                                            @click="
+                                                api()
+                                                    .delete(route('clients.destroy', client.id), { headers: { accept: '*/*' } })
+                                                    .then(() => router.visit(route('clients.list')))
+                                            "
+                                            >Continue
+                                        </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>
