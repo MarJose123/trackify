@@ -5,30 +5,38 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { api } from '@/lib/axios';
 import eventBus from '@/lib/eventBus';
-import { ClientTableFilter } from '@/types/clients';
+import { Client } from '@/types/clients';
+import { ProjectTableFilter } from '@/types/projects';
 import { Filter } from 'lucide-vue-next';
 import { onMounted, reactive, ref, watch } from 'vue';
 
-const availableFilter = ref<ClientTableFilter>();
+const availableFilter = ref<ProjectTableFilter>();
+const clientFilter = ref<Client[]>();
 
 const filter = reactive({
     status: undefined,
-    currency: undefined,
+    client: undefined,
 });
 
 const resetFilter = () => {
     filter.status = undefined;
-    filter.currency = undefined;
+    filter.client = undefined;
 };
 
 onMounted(() => {
     api()
-        .get(route('clients.table-filter-status'))
+        .get(route('projects.table-filter-status'))
         .then((resp) => (availableFilter.value = resp.data));
+    api()
+        .get(route('clients.list'))
+        .then((resp) => {
+            console.info(resp.data);
+            clientFilter.value = resp.data.data;
+        });
 });
 
 watch(filter, (value) => {
-    eventBus.emit('client-table-filter', value);
+    eventBus.emit('project-table-filter', value);
 });
 </script>
 
@@ -64,16 +72,16 @@ watch(filter, (value) => {
                         </Select>
                     </div>
                     <div class="grid grid-cols-3 items-center gap-4">
-                        <Label for="maxWidth">Currency</Label>
-                        <Select v-model:model-value="filter.currency">
+                        <Label for="maxWidth">Client</Label>
+                        <Select v-model:model-value="filter.client">
                             <SelectTrigger class="w-[180px]">
-                                <SelectValue placeholder="Select Currency" />
+                                <SelectValue placeholder="Select Client" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectLabel>Currency</SelectLabel>
-                                    <SelectItem v-for="currency in availableFilter?.currency" :key="currency" :value="currency">
-                                        {{ currency }}
+                                    <SelectLabel>Clients</SelectLabel>
+                                    <SelectItem v-for="client in clientFilter" :key="client.id" :value="client.id">
+                                        {{ client.company_name }} - {{ client.name }}
                                     </SelectItem>
                                 </SelectGroup>
                             </SelectContent>

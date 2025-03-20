@@ -1,8 +1,8 @@
 <script setup lang="ts" generic="TData, TValue">
-import DataTableBulkAction from '@/components/data-table/clients/DataTableBulkAction.vue';
-import DataTableFilterOption from '@/components/data-table/clients/DataTableFilterOption.vue';
-import DataTablePagination from '@/components/data-table/clients/DataTablePagination.vue';
-import DataTableViewOptions from '@/components/data-table/clients/DataTableViewOptions.vue';
+import DataTableBulkAction from '@/components/data-table/projects/DataTableBulkAction.vue';
+import DataTableFilterOption from '@/components/data-table/projects/DataTableFilterOption.vue';
+import DataTablePagination from '@/components/data-table/projects/DataTablePagination.vue';
+import DataTableViewOptions from '@/components/data-table/projects/DataTableViewOptions.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -25,8 +25,7 @@ const columnFilters = shallowRef<any | undefined>(undefined);
 const debouncedColumnFilters = refDebounced(columnFilters, 1000);
 
 const columnVisibility = ref<VisibilityState>({
-    Currency: false,
-    'Billing Method': false,
+    client_name: false,
 });
 const rowSelection = ref({});
 const pagination = ref({
@@ -65,10 +64,10 @@ const table = useVueTable({
 });
 
 watch(pagination, (val) => {
-    eventBus.emit('client-table-pagination-change', val);
+    eventBus.emit('project-table-pagination-change', val);
 });
 watch(debouncedColumnFilters, (val) => {
-    eventBus.emit('client-table-search', val);
+    eventBus.emit('project-table-search', val);
 });
 </script>
 
@@ -76,7 +75,7 @@ watch(debouncedColumnFilters, (val) => {
     <div class="w-full">
         <div class="flex items-center gap-2 py-4">
             <div class="relative w-full max-w-sm items-center">
-                <Input class="max-w-[250px] pl-9" placeholder="Search Company or name..." v-model:model-value="columnFilters" />
+                <Input class="max-w-[250px] pl-9" placeholder="Search project name..." v-model:model-value="columnFilters" />
                 <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
                     <Search class="size-6 text-muted-foreground" />
                 </span>

@@ -20,14 +20,13 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { api } from '@/lib/axios';
+import { Project } from '@/types/projects';
 import { router } from '@inertiajs/vue3';
 import { MoreHorizontal } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 
 defineProps<{
-    project: {
-        id: string;
-    };
+    project: Project;
 }>();
 
 function copy(id: string) {

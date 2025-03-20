@@ -1,10 +1,10 @@
 import DataTableSingleRowAction from '@/components/data-table/projects/DataTableSingleRowAction.vue';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Client } from '@/types/clients';
+import { Project } from '@/types/projects';
 import { ColumnDef } from '@tanstack/vue-table';
 import { h } from 'vue';
 
-export const projectColumns: ColumnDef<Client>[] = [
+export const projectColumns: ColumnDef<Project>[] = [
     {
         id: 'select',
         header: ({ table }) =>
@@ -24,10 +24,19 @@ export const projectColumns: ColumnDef<Client>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'client.name',
+        accessorKey: 'client_company_name',
         enableHiding: false,
-        header: () => h('div', {}, 'client.name'),
-        cell: ({ row }) => h('div', {}, row.getValue('client.name')),
+        header: () => h('div', {}, 'Client Company Name'),
+        cell: ({ row }) => h('div', {}, row.original.client.company_name),
+    },
+    {
+        accessorKey: 'client_name',
+        enableHiding: true,
+        meta: {
+            displayName: 'Client Name',
+        },
+        header: () => h('div', {}, 'Client Name'),
+        cell: ({ row }) => h('div', {}, row.original.client.name),
     },
     {
         accessorKey: 'name',
@@ -46,13 +55,13 @@ export const projectColumns: ColumnDef<Client>[] = [
         enableHiding: false,
         header: () => h('div', { class: '' }, ''),
         cell: ({ row }) => {
-            const client = row.original;
+            const project = row.original;
 
             return h(
                 'div',
                 { class: 'relative' },
                 h(DataTableSingleRowAction, {
-                    client,
+                    project,
                     onExpand: row.toggleExpanded,
                 }),
             );

@@ -37,7 +37,6 @@ export interface ProjectsData extends SharedData {
     projects: Pagination & { data: Project[] };
 }
 
-export interface ClientTableFilter {
+export interface ProjectTableFilter {
     status: any[];
-    currency: any[];
 }

@@ -12,8 +12,8 @@ Route::middleware(['auth'])->prefix('projects')->group(function () {
     //    Route::put('/update/{client}', [ProjectsController::class, 'update'])->name('clients.update');
     //    Route::delete('/delete/{client}', [ProjectsController::class, 'destroy'])->name('clients.destroy');
 
-    // axios route
-    //    Route::prefix('_api')->group(function () {
-    //        Route::get('/table-filter-status', [ProjectsController::class, 'tableFilterStatus'])->name('projects.table-filter-status');
-    //    });
+    //     axios route
+    Route::prefix('_api')->group(function () {
+        Route::get('/table-filter-status', [ProjectsController::class, 'tableFilterStatus'])->name('projects.table-filter-status');
+    });
 });
