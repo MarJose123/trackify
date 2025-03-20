@@ -58,7 +58,7 @@ eventBus.on('*', (type, filter) => {
 </script>
 
 <template>
-    <Head title="Clients" />
+    <Head title="Projects" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
