@@ -135,7 +135,7 @@ class ClientsController extends Controller
 
         $clients = collect($request->ids);
 
-        $clients->each(function ($client) use ($request) {
+        $clients->each(function ($client) {
             Clients::destroy($client);
         });
 
