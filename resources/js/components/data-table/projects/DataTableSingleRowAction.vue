@@ -11,54 +11,53 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { api } from '@/lib/axios';
 import { router } from '@inertiajs/vue3';
-import type { Table } from '@tanstack/vue-table';
-import { EllipsisVertical } from 'lucide-vue-next';
-import { computed, watch } from 'vue';
+import { MoreHorizontal } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
-interface DataTableViewOptionsProps {
-    table: Table<any[]>;
+defineProps<{
+    project: {
+        id: string;
+    };
+}>();
+
+function copy(id: string) {
+    navigator.clipboard.writeText(id);
+    toast('Project ID has been copied to clipboard.');
 }
 
-const props = defineProps<DataTableViewOptionsProps>();
-
-const selectedRows = computed(() => props.table.getFilteredSelectedRowModel().rows);
-
-const deleteRecord = async () => {
-    const ids: any[] = [];
-    selectedRows.value.forEach((data: any) => {
-        ids.push(data.original.id);
-    });
-    await api().delete(
-        route('clients.bulk.destroy', {
-            _query: { ids: ids },
-        }),
-        { headers: { accept: '*/*' } },
-    );
-    router.visit(route('clients.list'));
+const deleteRecord = async (id: string) => {
+    await api().delete(route('projects.destroy', id), { headers: { accept: '*/*' } });
+    router.visit(route('projects.index'));
 };
-
-watch(selectedRows, (val) => {
-    console.log(val);
-});
 </script>
 
 <template>
     <DropdownMenu :modal="false">
         <DropdownMenuTrigger as-child>
-            <Button variant="outline" @click.stop>
+            <Button variant="ghost" class="h-8 w-8 p-0" @click.stop>
                 <span class="sr-only">Open menu</span>
-                <EllipsisVertical class="h-4 w-4" />
-                Bulk Action
+                <MoreHorizontal class="h-4 w-4" />
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem @click="copy(project.id)"> Copy Client ID</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem @click="router.visit(route('projects.show', project.id))">View Project</DropdownMenuItem>
+            <DropdownMenuItem @click="router.visit(route('projects.edit', project.id))">Edit Project</DropdownMenuItem>
             <DropdownMenuItem>
                 <AlertDialog>
-                    <AlertDialogTrigger @click.stop>Delete {{ selectedRows.length > 1 ? 'Clients' : 'Client' }}</AlertDialogTrigger>
+                    <AlertDialogTrigger @click.stop>Delete Client</AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -68,7 +67,9 @@ watch(selectedRows, (val) => {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction :class="buttonVariants({ variant: 'destructive' })" @click="deleteRecord">Continue </AlertDialogAction>
+                            <AlertDialogAction :class="buttonVariants({ variant: 'destructive' })" @click="deleteRecord(project.id)"
+                                >Continue
+                            </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
@@ -76,3 +77,5 @@ watch(selectedRows, (val) => {
         </DropdownMenuContent>
     </DropdownMenu>
 </template>
+
+<style scoped></style>

@@ -21,7 +21,8 @@ defineProps<Props>();
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        :class="className" v-bind="$attrs"
+        :class="className"
+        v-bind="$attrs"
     >
         <path d="M8 2v4" />
         <path d="M12 2v4" />
