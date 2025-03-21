@@ -10,9 +10,9 @@ import { type BreadcrumbItem } from '@/types';
 import { CreationSharedData } from '@/types/projects';
 import { Head, router, usePage } from '@inertiajs/vue3';
 import { toTypedSchema } from '@vee-validate/zod';
-import { Loader2 } from 'lucide-vue-next';
+import { Check, ChevronsUpDown, Loader2, Search } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
-import { computed, h, ref } from 'vue';
+import { h, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import * as z from 'zod';
 
@@ -28,7 +28,6 @@ import {
     ComboboxTrigger,
 } from '@/components/ui/combobox';
 import { cn } from '@/lib/utils';
-import { Check, ChevronsUpDown } from 'lucide-vue-next';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -43,11 +42,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const page = usePage<CreationSharedData>();
 const canCreateAnother = ref<boolean>(false);
-
-const clientDisplayValue = computed((val) => {
-    const client = page.props.fields.clients.find((client) => client.id === val);
-    return `${client?.company_name} - ${client?.name}`;
-});
 
 const formSchema = toTypedSchema(
     z.object({
@@ -81,7 +75,7 @@ const formSchema = toTypedSchema(
     }),
 );
 
-const { handleSubmit, isSubmitting, isFieldDirty, setFieldValue, resetForm } = useForm({
+const { handleSubmit, isSubmitting, isFieldDirty, setFieldValue, resetForm, values } = useForm({
     validationSchema: formSchema,
     initialValues: {
         status: 'Active',
@@ -148,41 +142,51 @@ const onSubmit = handleSubmit(async (values) => {
                         <FormField name="client" :validate-on-blur="!isFieldDirty">
                             <FormItem>
                                 <FormLabel>Client</FormLabel>
-                                <Combobox by="label">
-                                    <FormControl>
-                                        <ComboboxAnchor class="w-full">
-                                            <div class="relative items-center">
-                                                <ComboboxInput
-                                                    :display-value="(val) => (val ? clientDisplayValue(val) : '')"
-                                                    placeholder="Select Client"
-                                                />
-                                                <ComboboxTrigger class="absolute inset-y-0 end-0 flex items-center justify-center px-3">
-                                                    <ChevronsUpDown class="size-4 text-muted-foreground" />
-                                                </ComboboxTrigger>
-                                            </div>
+                                <FormControl>
+                                    <Combobox by="label">
+                                        <ComboboxAnchor as-child class="w-full">
+                                            <ComboboxTrigger as-child>
+                                                <Button variant="outline" class="justify-between">
+                                                    {{
+                                                        values?.client
+                                                            ? `${page.props.fields.clients.find((client) => client.id === values.client)?.company_name} - ${page.props.fields.clients.find((client) => client.id === values.client)?.name}`
+                                                            : 'Select Client'
+                                                    }}
+
+                                                    <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </ComboboxTrigger>
                                         </ComboboxAnchor>
-                                    </FormControl>
+                                        <ComboboxList class="w-[370px] p-0" align="start" side="bottom">
+                                            <div class="relative w-full max-w-sm items-center">
+                                                <ComboboxInput
+                                                    class="h-10 rounded-none border-0 border-b pl-9 focus-visible:ring-0"
+                                                    placeholder="Select Client..."
+                                                />
+                                                <span class="absolute inset-y-0 start-0 flex items-center justify-center px-3">
+                                                    <Search class="size-4 text-muted-foreground" />
+                                                </span>
+                                            </div>
+                                            <ComboboxEmpty> Nothing found.</ComboboxEmpty>
 
-                                    <ComboboxList>
-                                        <ComboboxEmpty> Nothing found. </ComboboxEmpty>
+                                            <ComboboxGroup>
+                                                <ComboboxItem
+                                                    v-for="client in page.props.fields.clients"
+                                                    :key="client.id"
+                                                    :value="client.id"
+                                                    @select="() => setFieldValue('client', client.id)"
+                                                >
+                                                    {{ client.company_name }} - {{ client.name }}
 
-                                        <ComboboxGroup>
-                                            <ComboboxItem
-                                                v-for="client in page.props.fields.clients"
-                                                :key="client.id"
-                                                :value="client.id"
-                                                @select="() => setFieldValue('client', client.id)"
-                                            >
-                                                {{ client.company_name }} - {{ client.name }}
-
-                                                <ComboboxItemIndicator>
-                                                    <Check :class="cn('ml-auto h-4 w-4')" />
-                                                </ComboboxItemIndicator>
-                                            </ComboboxItem>
-                                        </ComboboxGroup>
-                                    </ComboboxList>
-                                </Combobox>
-                                <FormDescription />
+                                                    <ComboboxItemIndicator>
+                                                        <Check :class="cn('ml-auto h-4 w-4')" />
+                                                    </ComboboxItemIndicator>
+                                                </ComboboxItem>
+                                            </ComboboxGroup>
+                                        </ComboboxList>
+                                    </Combobox>
+                                </FormControl>
+                                <FormDescription> Only Active Client will be showing.</FormDescription>
                                 <FormMessage />
                             </FormItem>
                         </FormField>

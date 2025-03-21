@@ -33,7 +33,7 @@ class ClientsController extends Controller
         }
 
         if (! app()->runningInConsole() && ! app()->runningUnitTests()) {
-            Window::resize(DefaultWindowSize::WIDTH->getSize() + 300, DefaultWindowSize::HEIGHT->getSize(), WindowName::MAIN->getId());
+            Window::resize(DefaultWindowSize::DEFAULT_MIN_WIDTH->getSize() + 300, DefaultWindowSize::DEFAULT_MIN_HEIGHT->getSize(), WindowName::MAIN->getId());
         }
 
         return Inertia::render('clients/List', [

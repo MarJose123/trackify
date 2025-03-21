@@ -13,7 +13,7 @@ import { router } from '@inertiajs/vue3';
 import type { ColumnDef, VisibilityState } from '@tanstack/vue-table';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getSortedRowModel, useVueTable } from '@tanstack/vue-table';
 import { refDebounced } from '@vueuse/core';
-import { Search, UserPlus } from 'lucide-vue-next';
+import { Plus, Search } from 'lucide-vue-next';
 import { ref, shallowRef, watch } from 'vue';
 
 const props = defineProps<{
@@ -84,8 +84,8 @@ watch(debouncedColumnFilters, (val) => {
             </div>
             <div class="ml-auto flex-row flex-wrap space-x-1">
                 <DataTableBulkAction :table="table" v-if="table.getFilteredSelectedRowModel().rows.length > 0" />
-                <Button variant="outline" @click.prevent="router.visit(route('clients.create'))">
-                    <UserPlus class="mr-1 h-4 w-4" />
+                <Button variant="outline" @click.prevent="router.visit(route('projects.create'))">
+                    <Plus class="mr-1 h-4 w-4" />
                     Add
                 </Button>
                 <DataTableFilterOption />

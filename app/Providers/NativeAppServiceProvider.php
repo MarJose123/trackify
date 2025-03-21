@@ -22,8 +22,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->id(WindowName::MAIN->getId())
             ->hideMenu()
             ->position(100, 100)
-            ->minHeight(DefaultWindowSize::HEIGHT->getSize())
-            ->minWidth(DefaultWindowSize::WIDTH->getSize())
+            ->minHeight(DefaultWindowSize::DEFAULT_MIN_HEIGHT->getSize())
+            ->maxHeight(DefaultWindowSize::DEFAULT_MAX_HEIGHT->getSize())
+            ->minWidth(DefaultWindowSize::DEFAULT_MIN_WIDTH->getSize())
+            ->maxWidth(DefaultWindowSize::DEFAULT_MAX_WIDTH->getSize())
             ->url($this->isFirstInstalled() ? route('register') : route('login'))
             ->rememberState();
 
