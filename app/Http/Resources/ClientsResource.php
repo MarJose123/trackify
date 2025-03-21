@@ -17,7 +17,10 @@ class ClientsResource extends JsonResource
             'company_name' => $this->company_name,
             'currency' => $this->currency,
             'billing_method' => $this->billing_method,
+            'rate' => $this->rate,
             'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
