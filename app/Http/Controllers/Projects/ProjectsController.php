@@ -7,6 +7,7 @@ use App\Enums\Status as StatusEnum;
 use App\Enums\WindowName;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectsResource;
+use App\Models\Clients;
 use App\Models\Projects;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,15 +18,15 @@ class ProjectsController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 15);
-        $projects = Projects::query()
-            ->with('clients')
-            ->filterByQueryString()
-            ->searchByQueryString()
-            ->orderBy('created_at', 'desc')
-            ->paginate(perPage: $perPage)->appends(request()->query());
+        $projects = ProjectsResource::collection(
+            Projects::filterByQueryString()
+                ->searchByQueryString()
+                ->with('clients')
+                ->orderBy('created_at', 'desc')
+                ->paginate(perPage: $perPage)->appends(request()->query()));
 
         if ($request->wantsJson()) {
-            return response()->json(ProjectsResource::collection($projects));
+            return $projects;
         }
 
         if (! app()->runningInConsole() && ! app()->runningUnitTests()) {
@@ -33,12 +34,20 @@ class ProjectsController extends Controller
         }
 
         return Inertia::render('projects/Index', [
-            'projects' => ProjectsResource::collection($projects),
+            'projects' => $projects,
         ]);
 
     }
 
-    public function create() {}
+    public function create()
+    {
+        return Inertia::render('projects/Create', [
+            'fields' => [
+                'clients' => Clients::all(),
+                'status' => StatusEnum::cases(),
+            ],
+        ]);
+    }
 
     public function store(Request $request) {}
 

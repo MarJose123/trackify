@@ -26,6 +26,8 @@ const debouncedColumnFilters = refDebounced(columnFilters, 1000);
 
 const columnVisibility = ref<VisibilityState>({
     client_name: false,
+    created_at: false,
+    updated_at: false,
 });
 const rowSelection = ref({});
 const pagination = ref({

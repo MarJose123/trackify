@@ -26,9 +26,8 @@ export interface EditSharedData extends PageProps {
 export interface CreationSharedData extends PageProps {
     notification?: flashNotification['notification'];
     fields: {
+        clients: Client[];
         status: any[];
-        currency: any[];
-        billing_method: any[];
     };
 }
 

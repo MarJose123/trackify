@@ -51,6 +51,26 @@ export const projectColumns: ColumnDef<Project>[] = [
         cell: ({ row }) => h('div', {}, row.getValue('status')),
     },
     {
+        accessorKey: 'created_at',
+        enableHiding: true,
+        meta: {
+            displayName: 'Created At',
+        },
+        header: () => h('div', {}, 'Created At'),
+        cell: ({ row }) => {
+            return h('div', {}, row.getValue('created_at'));
+        },
+    },
+    {
+        accessorKey: 'updated_at',
+        enableHiding: true,
+        meta: {
+            displayName: 'Created At',
+        },
+        header: () => h('div', {}, 'Updated At'),
+        cell: ({ row }) => h('div', {}, row.getValue('updated_at')),
+    },
+    {
         accessorKey: 'actions',
         enableHiding: false,
         header: () => h('div', { class: '' }, ''),
