@@ -20,7 +20,8 @@ class ProjectsController extends Controller
     {
         $perPage = $request->query('per_page', 15);
         $projects = ProjectsResource::collection(
-            Projects::filterByQueryString()
+            Projects::query()
+                ->filterByQueryString()
                 ->searchByQueryString()
                 ->with('clients')
                 ->orderBy('created_at', 'desc')

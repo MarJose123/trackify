@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Status as StatusEnum;
+use App\Models\Filters\Projects\Client as ClientFilter;
 use App\Models\Filters\Projects\Status as StatusFilter;
 use App\Models\Scopes\MyOwnRecordScope;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -47,6 +48,7 @@ class Projects extends Model
 
     protected array $filters = [
         StatusFilter::class,
+        ClientFilter::class,
     ];
 
     /**

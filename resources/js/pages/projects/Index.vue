@@ -34,6 +34,27 @@ onMounted(() => {
 eventBus.on('*', (type, filter) => {
     console.log(type, filter);
 
+    if (type.toString().includes('project-table-filter')) {
+        api()
+            .get(
+                route('projects.index', {
+                    ...(filter?.status !== undefined && { status: filter?.status }),
+                    ...(filter?.client !== undefined && { client: filter?.client }),
+                }),
+            )
+            .then((resp) => {
+                console.info(resp);
+                projectsPagination.value = resp.data;
+            })
+            .catch(() => {
+                useToast().toast({
+                    title: 'Uh oh! Something went wrong.',
+                    description: 'There was a problem with your request when applying filters.',
+                    variant: 'destructive',
+                });
+            });
+    }
+
     // Table search field
     if (type.toString().includes('project-table-search')) {
         api()
