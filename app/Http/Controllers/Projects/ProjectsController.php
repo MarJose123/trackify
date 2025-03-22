@@ -81,13 +81,30 @@ class ProjectsController extends Controller
         return $this->index(new Request);
     }
 
-    public function show($id) {}
+    public function show(Projects $project)
+    {
+        return Inertia::render('projects/Show', [
+            'project' => ProjectsResource::make($project->load('clients')),
+        ]);
+    }
 
-    public function edit($id) {}
+    public function edit(Projects $project) {}
 
     public function update(Request $request, $id) {}
 
-    public function destroy($id) {}
+    public function destroy(Projects $project, Request $request)
+    {
+        $project->delete();
+
+        $request->session()->flash('notification', [
+            'success' => [
+                'title' => 'Project Deleted',
+                'description' => 'Project has been deleted successfully.',
+            ],
+        ]);
+
+        return $this->index(new Request);
+    }
 
     public function tableFilterStatus()
     {

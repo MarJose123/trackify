@@ -31,7 +31,7 @@ export const projectColumns: ColumnDef<Project>[] = [
     },
     {
         accessorKey: 'client_name',
-        enableHiding: true,
+        enableHiding: false,
         meta: {
             displayName: 'Client Name',
         },
@@ -41,7 +41,7 @@ export const projectColumns: ColumnDef<Project>[] = [
     {
         accessorKey: 'name',
         enableHiding: false,
-        header: () => h('div', {}, 'Name'),
+        header: () => h('div', {}, 'Project Name'),
         cell: ({ row }) => h('div', {}, row.getValue('name')),
     },
     {

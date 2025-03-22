@@ -25,7 +25,6 @@ const columnFilters = shallowRef<any | undefined>(undefined);
 const debouncedColumnFilters = refDebounced(columnFilters, 1000);
 
 const columnVisibility = ref<VisibilityState>({
-    client_name: false,
     created_at: false,
     updated_at: false,
 });
@@ -116,7 +115,7 @@ watch(debouncedColumnFilters, (val) => {
                         <template v-for="row in table.getRowModel().rows" :key="row.id">
                             <TableRow
                                 :data-state="row.getIsSelected() ? 'selected' : undefined"
-                                @click.stop="router.visit(route('clients.show', row.original.id))"
+                                @click.stop="router.visit(route('projects.show', row.original.id))"
                             >
                                 <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                                     <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />

@@ -14,7 +14,9 @@ export interface Project {
 }
 
 export interface ShowSharedData extends PageProps {
-    project: Project;
+    project?: {
+        data?: Project;
+    };
     notification?: flashNotification['notification'];
 }
 export interface EditSharedData extends PageProps {

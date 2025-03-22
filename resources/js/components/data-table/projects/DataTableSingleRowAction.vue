@@ -50,13 +50,13 @@ const deleteRecord = async (id: string) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem @click="copy(project.id)"> Copy Client ID</DropdownMenuItem>
+            <DropdownMenuItem @click="copy(project.id)"> Copy Project ID</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem @click="router.visit(route('projects.show', project.id))">View Project</DropdownMenuItem>
             <DropdownMenuItem @click="router.visit(route('projects.edit', project.id))">Edit Project</DropdownMenuItem>
             <DropdownMenuItem>
                 <AlertDialog>
-                    <AlertDialogTrigger @click.stop>Delete Client</AlertDialogTrigger>
+                    <AlertDialogTrigger @click.stop>Delete Project</AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
