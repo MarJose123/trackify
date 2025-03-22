@@ -6,6 +6,7 @@ use App\Enums\DefaultWindowSize;
 use App\Enums\Status as StatusEnum;
 use App\Enums\WindowName;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectsRequest;
 use App\Http\Resources\ProjectsResource;
 use App\Models\Clients;
 use App\Models\Projects;
@@ -54,7 +55,31 @@ class ProjectsController extends Controller
         ]);
     }
 
-    public function store(Request $request) {}
+    public function store(ProjectsRequest $request)
+    {
+
+        Projects::create([
+            'user_id' => auth()->id(),
+            ...$request->validated(),
+        ]);
+
+        $request->session()->flash('notification', [
+            'success' => [
+                'title' => 'Project Created',
+                'description' => 'Project has been created successfully.',
+            ],
+        ]);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Project Created',
+                'description' => 'Project has been successfully created.',
+            ], \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
+        }
+
+        return $this->index(new Request);
+    }
 
     public function show($id) {}
 

@@ -45,7 +45,7 @@ const canCreateAnother = ref<boolean>(false);
 
 const formSchema = toTypedSchema(
     z.object({
-        client: z.string({
+        client_id: z.string({
             required_error: 'This field required to have a value.',
         }),
         name: z
@@ -60,18 +60,6 @@ const formSchema = toTypedSchema(
             })
             .min(2)
             .max(225),
-        billing_method: z.string({
-            required_error: 'This field required to have a value.',
-        }),
-        currency: z.string({
-            required_error: 'This field required to have a value.',
-        }),
-        rate: z.coerce
-            .number({
-                required_error: 'This field required to have a value.',
-                invalid_type_error: 'Field value must be a number',
-            })
-            .positive(),
     }),
 );
 
@@ -84,11 +72,18 @@ const { handleSubmit, isSubmitting, isFieldDirty, setFieldValue, resetForm, valu
 
 const onSubmit = handleSubmit(async (values) => {
     await api()
-        .post(route('clients.store'), values, {
-            headers: {
-                accept: canCreateAnother.value === true ? 'application/json' : '*/*',
+        .post(
+            route('projects.store'),
+            {
+                clients_id: values.client_id,
+                ...values,
             },
-        })
+            {
+                headers: {
+                    accept: canCreateAnother.value === true ? 'application/json' : '*/*',
+                },
+            },
+        )
         .then((resp) => {
             if (canCreateAnother.value) {
                 resetForm();
@@ -99,7 +94,7 @@ const onSubmit = handleSubmit(async (values) => {
                     });
                 }
             } else {
-                router.visit(route('clients.list'));
+                router.visit(route('projects.index'));
             }
         })
         .catch((resp) => {
@@ -139,17 +134,18 @@ const onSubmit = handleSubmit(async (values) => {
             <form @submit="onSubmit" class="grid gap-y-5">
                 <div class="grid auto-rows-min gap-3 gap-y-4 md:grid-cols-2">
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <FormField name="client" :validate-on-blur="!isFieldDirty">
+                        <FormField name="client_id" v-slot="{ componentField }" :validate-on-blur="!isFieldDirty">
                             <FormItem>
                                 <FormLabel>Client</FormLabel>
+                                <FormDescription class="italic"> Only Active Client will be showing.</FormDescription>
                                 <FormControl>
-                                    <Combobox by="label">
+                                    <Combobox by="label" v-bind="componentField">
                                         <ComboboxAnchor as-child class="w-full">
                                             <ComboboxTrigger as-child>
                                                 <Button variant="outline" class="justify-between">
                                                     {{
-                                                        values?.client
-                                                            ? `${page.props.fields.clients.find((client) => client.id === values.client)?.company_name} - ${page.props.fields.clients.find((client) => client.id === values.client)?.name}`
+                                                        values?.client_id
+                                                            ? `${page.props.fields.clients.find((client) => client.id === values.client_id)?.company_name} - ${page.props.fields.clients.find((client) => client.id === values.client_id)?.name}`
                                                             : 'Select Client'
                                                     }}
 
@@ -160,8 +156,9 @@ const onSubmit = handleSubmit(async (values) => {
                                         <ComboboxList class="w-[370px] p-0" align="start" side="bottom">
                                             <div class="relative w-full max-w-sm items-center">
                                                 <ComboboxInput
-                                                    class="h-10 rounded-none border-0 border-b pl-9 focus-visible:ring-0"
-                                                    placeholder="Select Client..."
+                                                    :display-value="(val) => ''"
+                                                    class="h-9 rounded-none border-0 border-b pl-9 focus-visible:ring-0"
+                                                    placeholder="Search Client..."
                                                 />
                                                 <span class="absolute inset-y-0 start-0 flex items-center justify-center px-3">
                                                     <Search class="size-4 text-muted-foreground" />
@@ -174,7 +171,7 @@ const onSubmit = handleSubmit(async (values) => {
                                                     v-for="client in page.props.fields.clients"
                                                     :key="client.id"
                                                     :value="client.id"
-                                                    @select="() => setFieldValue('client', client.id)"
+                                                    @select="() => setFieldValue('client_id', client.id)"
                                                 >
                                                     {{ client.company_name }} - {{ client.name }}
 
@@ -186,19 +183,6 @@ const onSubmit = handleSubmit(async (values) => {
                                         </ComboboxList>
                                     </Combobox>
                                 </FormControl>
-                                <FormDescription> Only Active Client will be showing.</FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-                    </div>
-                    <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <FormField name="name" v-slot="{ componentField }" :validate-on-blur="!isFieldDirty">
-                            <FormItem>
-                                <FormLabel>Project Name</FormLabel>
-                                <FormControl>
-                                    <Input id="name" type="text" v-bind="componentField" />
-                                </FormControl>
-                                <FormDescription />
                                 <FormMessage />
                             </FormItem>
                         </FormField>
@@ -227,13 +211,24 @@ const onSubmit = handleSubmit(async (values) => {
                             </FormItem>
                         </FormField>
                     </div>
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <FormField name="name" v-slot="{ componentField }" :validate-on-blur="!isFieldDirty">
+                            <FormItem>
+                                <FormLabel>Project Name</FormLabel>
+                                <FormControl>
+                                    <Input id="name" type="text" v-bind="componentField" />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                    </div>
                 </div>
                 <div class="grid auto-rows-min gap-3 gap-y-4 md:grid-cols-2">
                     <div />
                     <div class="grid w-full max-w-sm items-center gap-1.5">
                         <div class="flex w-full flex-row-reverse gap-2">
-                            <Button type="button" :disabled="isSubmitting" variant="outline" @click.prevent="router.visit(route('clients.list'))">
-                                <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
+                            <Button type="button" :disabled="isSubmitting" variant="outline" @click.prevent="router.visit(route('projects.index'))">
                                 Cancel
                             </Button>
                             <Button type="submit" :disabled="isSubmitting" variant="outline" @click="canCreateAnother = false">
