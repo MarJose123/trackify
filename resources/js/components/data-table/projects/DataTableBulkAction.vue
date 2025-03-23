@@ -32,12 +32,12 @@ const deleteRecord = async () => {
         ids.push(data.original.id);
     });
     await api().delete(
-        route('clients.bulk.destroy', {
+        route('projects.bulk.destroy', {
             _query: { ids: ids },
         }),
         { headers: { accept: '*/*' } },
     );
-    router.visit(route('clients.list'));
+    router.visit(route('projects.index'));
 };
 
 watch(selectedRows, (val) => {

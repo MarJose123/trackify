@@ -130,6 +130,29 @@ class ProjectsController extends Controller
         return $this->index(new Request);
     }
 
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+        ]);
+
+        $projects = collect($request->ids);
+
+        $projects->each(function ($project) {
+            Projects::destroy($project);
+        });
+
+        $request->session()->flash('notification', [
+            'success' => [
+                'title' => 'Projects Deleted',
+                'description' => 'Projects has been deleted successfully.',
+            ],
+        ]);
+
+        return $this->index(new Request);
+
+    }
+
     public function tableFilterStatus()
     {
         return response()->json([

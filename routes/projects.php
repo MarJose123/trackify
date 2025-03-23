@@ -11,6 +11,7 @@ Route::middleware(['auth'])->prefix('projects')->group(function () {
     Route::get('/edit/{project}', [ProjectsController::class, 'edit'])->name('projects.edit');
     Route::put('/update/{project}', [ProjectsController::class, 'update'])->name('projects.update');
     Route::delete('/delete/{project}', [ProjectsController::class, 'destroy'])->name('projects.destroy');
+    Route::delete('/bulk/delete', [ProjectsController::class, 'bulkDestroy'])->name('projects.bulk.destroy');
 
     //     axios route
     Route::prefix('_api')->group(function () {
