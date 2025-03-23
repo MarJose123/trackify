@@ -19,9 +19,9 @@
 
 | **Feature Name**         | **Status** | **Remarks**          |
 |--------------------------|------------|----------------------|
-| Client Management        | 🍳🧑‍🍳    | Cooking              |
-| Project Management       | 🏗️        | _Added to Milestone_ |
-| Time Tracking Management | 🏗️        | _Added to Milestone_ |
+| Client Management        | ✨✨         | Served               |
+| Project Management       | ✨✨         | Served               |
+| Time Tracking Management | 🍳🧑‍🍳️   | Cooking              |
 | Timesheet Management     | 🏗️        | _Added to Milestone_ |
 | Invoice Management       | 🏗️        | _Added to Milestone_ |
 | Integration Management   | 🏗️        | _Added to Milestone_ |
@@ -39,4 +39,4 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The GNU GPLv3. Please see [License File](LICENSE.md) for more information.
