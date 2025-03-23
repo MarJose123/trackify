@@ -22,7 +22,7 @@ class AuthenticatedSessionController extends Controller
     public function create(Request $request): Response
     {
         if (! app()->runningInConsole() && ! app()->runningUnitTests()) {
-            Window::resize(DefaultWindowSize::WIDTH->getSize(), DefaultWindowSize::HEIGHT->getSize(), WindowName::MAIN->getId());
+            Window::resize(DefaultWindowSize::DEFAULT_MIN_WIDTH->getSize(), DefaultWindowSize::DEFAULT_MIN_HEIGHT->getSize(), WindowName::MAIN->getId());
         }
 
         return Inertia::render('auth/Login', [

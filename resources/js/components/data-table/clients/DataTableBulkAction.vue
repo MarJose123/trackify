@@ -12,11 +12,11 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { api } from '@/lib/axios';
 import { router } from '@inertiajs/vue3';
 import type { Table } from '@tanstack/vue-table';
 import { EllipsisVertical } from 'lucide-vue-next';
 import { computed, watch } from 'vue';
-import { api } from '@/lib/axios';
 
 interface DataTableViewOptionsProps {
     table: Table<any[]>;
@@ -29,13 +29,15 @@ const selectedRows = computed(() => props.table.getFilteredSelectedRowModel().ro
 const deleteRecord = async () => {
     const ids: any[] = [];
     selectedRows.value.forEach((data: any) => {
-        ids.push(data.original.id)
+        ids.push(data.original.id);
     });
-    await api().delete(route('clients.bulk.destroy',{
-        _query: { ids: ids }
-}), { headers: { accept: '*/*' } });
+    await api().delete(
+        route('clients.bulk.destroy', {
+            _query: { ids: ids },
+        }),
+        { headers: { accept: '*/*' } },
+    );
     router.visit(route('clients.list'));
-
 };
 
 watch(selectedRows, (val) => {

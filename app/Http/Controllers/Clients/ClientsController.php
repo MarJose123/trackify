@@ -9,30 +9,31 @@ use App\Enums\Status;
 use App\Enums\WindowName;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
+use App\Http\Resources\ClientsResource;
 use App\Models\Clients;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
 use Inertia\Response;
 use Native\Laravel\Facades\Window;
 
 class ClientsController extends Controller
 {
-    public function list(Request $request): Response|JsonResponse
+    public function list(Request $request): AnonymousResourceCollection|Response
     {
         $perPage = $request->query('per_page', 5);
-        $clients = Clients::query()
+        $clients = ClientsResource::collection(Clients::query()
             ->filterByQueryString()
             ->searchByQueryString()
             ->orderBy('created_at', 'desc')
-            ->paginate(perPage: $perPage)->appends(request()->query());
+            ->paginate(perPage: $perPage)->appends(request()->query()));
 
         if ($request->wantsJson()) {
-            return response()->json($clients);
+            return $clients;
         }
 
         if (! app()->runningInConsole() && ! app()->runningUnitTests()) {
-            Window::resize(DefaultWindowSize::WIDTH->getSize() + 300, DefaultWindowSize::HEIGHT->getSize(), WindowName::MAIN->getId());
+            Window::resize(DefaultWindowSize::DEFAULT_MIN_WIDTH->getSize() + 300, DefaultWindowSize::DEFAULT_MIN_HEIGHT->getSize(), WindowName::MAIN->getId());
         }
 
         return Inertia::render('clients/List', [
@@ -135,7 +136,7 @@ class ClientsController extends Controller
 
         $clients = collect($request->ids);
 
-        $clients->each(function ($client) use ($request) {
+        $clients->each(function ($client) {
             Clients::destroy($client);
         });
 

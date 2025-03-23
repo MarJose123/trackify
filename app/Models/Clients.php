@@ -50,6 +50,11 @@ class Clients extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', StatusEnum::ACTIVE);
+    }
+
     /**
      * The "booted" method of the model for Global scope.
      */

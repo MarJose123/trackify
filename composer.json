@@ -9,7 +9,8 @@
         "Freelance Tracking & Billing",
         "Freelance Project Tracking",
         "Project Tracking",
-        "Desktop App"
+        "Desktop App",
+        "Free Time Tracker"
     ],
     "license": "MIT",
     "require": {

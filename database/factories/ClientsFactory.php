@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\BillingMethod;
 use App\Models\Clients;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,13 +16,13 @@ class ClientsFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'currency' => $this->faker->word(),
-            'billing_method' => $this->faker->word(),
-            'company_name' => $this->faker->name(),
+            'currency' => $this->faker->currencyCode(),
+            'billing_method' => $this->faker->randomElement(BillingMethod::cases())->value,
+            'company_name' => $this->faker->company(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 
-            'user_id' => User::factory(),
+            'user_id' => User::first(),
         ];
     }
 }
