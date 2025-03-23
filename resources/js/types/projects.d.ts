@@ -20,7 +20,9 @@ export interface ShowSharedData extends PageProps {
     notification?: flashNotification['notification'];
 }
 export interface EditSharedData extends PageProps {
-    project: Project;
+    project?: {
+        data?: Project;
+    };
     fields: CreationSharedData['fields'];
     notification?: flashNotification['notification'];
 }

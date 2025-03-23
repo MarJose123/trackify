@@ -10,6 +10,20 @@ class ProjectsRequest extends FormRequest
 {
     public function rules(): array
     {
+        return $this->isMethod('POST') ? $this->createValidationRules() : $this->updateValidationRules();
+    }
+
+    public function updateValidationRules(): array
+    {
+        return [
+            'clients_id' => ['required', 'exists:clients,id'],
+            'name' => ['required', 'string', 'max:255'],
+            'status' => ['required', Rule::enum(Status::class)],
+        ];
+    }
+
+    public function createValidationRules(): array
+    {
         return [
             'clients_id' => ['required', 'exists:clients,id'],
             'name' => ['required', 'string', 'max:255'],

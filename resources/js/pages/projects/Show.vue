@@ -89,7 +89,7 @@ onMounted(() => {
                 </div>
                 <div class="grid auto-rows-min gap-3 gap-y-4 md:grid-cols-2">
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label for="company_name">Company Name</Label>
+                        <Label for="company_name">Client Name</Label>
                         <Input
                             id="company_name"
                             type="text"

@@ -30,7 +30,6 @@ onMounted(() => {
     api()
         .get(route('clients.list'))
         .then((resp) => {
-            console.info(resp.data);
             clientFilter.value = resp.data.data;
         });
 });

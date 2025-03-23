@@ -89,9 +89,32 @@ class ProjectsController extends Controller
         ]);
     }
 
-    public function edit(Projects $project) {}
+    public function edit(Projects $project)
+    {
+        return Inertia::render('projects/Edit', [
+            'project' => ProjectsResource::make($project->load('clients')),
+            'fields' => [
+                'status' => StatusEnum::cases(),
+                'clients' => Clients::all(),
+            ],
+        ]);
 
-    public function update(Request $request, $id) {}
+    }
+
+    public function update(ProjectsRequest $request, Projects $project)
+    {
+        $project->update($request->validated());
+
+        $request->session()->flash('notification', [
+            'success' => [
+                'title' => 'Project Updated',
+                'description' => 'Project has been updated successfully.',
+            ],
+        ]);
+
+        return $this->show($project);
+
+    }
 
     public function destroy(Projects $project, Request $request)
     {

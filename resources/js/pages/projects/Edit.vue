@@ -1,21 +1,5 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ToastAction, useToast } from '@/components/ui/toast';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { api } from '@/lib/axios';
-import { type BreadcrumbItem } from '@/types';
-import { CreationSharedData } from '@/types/projects';
-import { Head, router, usePage } from '@inertiajs/vue3';
-import { toTypedSchema } from '@vee-validate/zod';
-import { Check, ChevronsUpDown, Loader2, Search } from 'lucide-vue-next';
-import { useForm } from 'vee-validate';
-import { h, ref } from 'vue';
-import { toast } from 'vue-sonner';
-import * as z from 'zod';
-
 import {
     Combobox,
     ComboboxAnchor,
@@ -27,7 +11,24 @@ import {
     ComboboxList,
     ComboboxTrigger,
 } from '@/components/ui/combobox';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ToastAction, useToast } from '@/components/ui/toast';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { api } from '@/lib/axios';
 import { cn } from '@/lib/utils';
+import { type BreadcrumbItem } from '@/types';
+import { EditSharedData } from '@/types/projects';
+import { Head, router, usePage } from '@inertiajs/vue3';
+import { toTypedSchema } from '@vee-validate/zod';
+import { Check, ChevronsUpDown, Loader2, Search } from 'lucide-vue-next';
+import { useForm } from 'vee-validate';
+import { h } from 'vue';
+import * as z from 'zod';
+
+const page = usePage<EditSharedData>();
+const project = page.props.project?.data;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,13 +36,14 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('projects.index'),
     },
     {
-        title: 'Add Project',
-        href: route('projects.create'),
+        title: `${project?.name}`,
+        href: route('projects.show', project?.id),
+    },
+    {
+        title: `Update Record`,
+        href: route('projects.edit', project?.id),
     },
 ];
-
-const page = usePage<CreationSharedData>();
-const canCreateAnother = ref<boolean>(false);
 
 const formSchema = toTypedSchema(
     z.object({
@@ -63,39 +65,31 @@ const formSchema = toTypedSchema(
     }),
 );
 
-const { handleSubmit, isSubmitting, isFieldDirty, setFieldValue, resetForm, values } = useForm({
+const { handleSubmit, isSubmitting, isFieldDirty, setFieldValue, values } = useForm({
     validationSchema: formSchema,
     initialValues: {
-        status: 'Active',
+        client_id: project?.client.id,
+        name: project?.name,
+        status: project?.status,
     },
 });
 
 const onSubmit = handleSubmit(async (values) => {
     await api()
-        .post(
-            route('projects.store'),
+        .put(
+            route('projects.update', project?.id),
             {
                 clients_id: values.client_id,
                 ...values,
             },
             {
                 headers: {
-                    accept: canCreateAnother.value === true ? 'application/json' : '*/*',
+                    accept: '*/*',
                 },
             },
         )
-        .then((resp) => {
-            if (canCreateAnother.value) {
-                resetForm();
-                canCreateAnother.value = false;
-                if (resp.status === 201) {
-                    toast(resp.data.message, {
-                        description: resp.data.description,
-                    });
-                }
-            } else {
-                router.visit(route('projects.index'));
-            }
+        .then(() => {
+            router.visit(route('projects.show', project?.id));
         })
         .catch((resp) => {
             console.log(resp);
@@ -127,7 +121,7 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-    <Head title="Add Record" />
+    <Head title="Edit Record" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl px-4 py-6">
@@ -136,7 +130,7 @@ const onSubmit = handleSubmit(async (values) => {
                     <div class="grid w-full max-w-sm items-center gap-1.5">
                         <FormField name="client_id" v-slot="{ componentField }" :validate-on-blur="!isFieldDirty">
                             <FormItem>
-                                <FormLabel>Client</FormLabel>
+                                <FormLabel>Client Name</FormLabel>
                                 <FormDescription class="italic"> Only Active Client will be showing.</FormDescription>
                                 <FormControl>
                                     <Combobox by="label" v-bind="componentField">
@@ -227,17 +221,18 @@ const onSubmit = handleSubmit(async (values) => {
                 <div class="grid auto-rows-min gap-3 gap-y-4 md:grid-cols-2">
                     <div />
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <div class="flex w-full flex-row-reverse gap-2">
-                            <Button type="button" :disabled="isSubmitting" variant="outline" @click.prevent="router.visit(route('projects.index'))">
+                        <div class="flex w-full flex-row-reverse gap-4">
+                            <Button type="submit" :disabled="isSubmitting">
+                                <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
+                                {{ isSubmitting ? 'Saving..' : 'Save' }}
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                :disabled="isSubmitting"
+                                @click.prevent="router.visit(route('projects.show', project?.id))"
+                            >
                                 Cancel
-                            </Button>
-                            <Button type="submit" :disabled="isSubmitting" variant="outline" @click="canCreateAnother = false">
-                                <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
-                                {{ isSubmitting ? 'Creating..' : 'Create' }}
-                            </Button>
-                            <Button type="submit" :disabled="isSubmitting" variant="outline" @click="canCreateAnother = true">
-                                <Loader2 v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin" />
-                                {{ isSubmitting ? 'Creating..' : 'Create & Another' }}
                             </Button>
                         </div>
                     </div>

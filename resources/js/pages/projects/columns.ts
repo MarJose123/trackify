@@ -26,7 +26,7 @@ export const projectColumns: ColumnDef<Project>[] = [
     {
         accessorKey: 'client_company_name',
         enableHiding: false,
-        header: () => h('div', {}, 'Client Company Name'),
+        header: () => h('div', {}, 'Company Name'),
         cell: ({ row }) => h('div', {}, row.original.client.company_name),
     },
     {

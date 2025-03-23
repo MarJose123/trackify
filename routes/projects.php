@@ -9,7 +9,7 @@ Route::middleware(['auth'])->prefix('projects')->group(function () {
     Route::post('/create', [ProjectsController::class, 'store'])->name('projects.store');
     Route::get('/show/{project}', [ProjectsController::class, 'show'])->name('projects.show');
     Route::get('/edit/{project}', [ProjectsController::class, 'edit'])->name('projects.edit');
-    //    Route::put('/update/{client}', [ProjectsController::class, 'update'])->name('clients.update');
+    Route::put('/update/{project}', [ProjectsController::class, 'update'])->name('projects.update');
     Route::delete('/delete/{project}', [ProjectsController::class, 'destroy'])->name('projects.destroy');
 
     //     axios route
