@@ -16,7 +16,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { Check, ChevronsUpDown, Search, Timer } from 'lucide-vue-next';
+import { Check, ChevronsUpDown, CirclePause, CirclePlay, CircleStop, Search, Timer } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -111,7 +111,7 @@ const invoices = [
                                 </span>
                             </div>
 
-                            <ComboboxEmpty> No framework found. </ComboboxEmpty>
+                            <ComboboxEmpty> No framework found.</ComboboxEmpty>
 
                             <ComboboxGroup>
                                 <ComboboxItem v-for="framework in frameworks" :key="framework.value" :value="framework">
@@ -148,7 +148,7 @@ const invoices = [
                                 </span>
                             </div>
 
-                            <ComboboxEmpty> No framework found. </ComboboxEmpty>
+                            <ComboboxEmpty> No framework found.</ComboboxEmpty>
 
                             <ComboboxGroup>
                                 <ComboboxItem v-for="framework in frameworks" :key="framework.value" :value="framework">
@@ -174,21 +174,30 @@ const invoices = [
                     <TableCaption>A list of your recent invoices.</TableCaption>
                     <TableHeader>
                         <TableRow>
-                            <TableHead class="w-[100px]"> Invoice </TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Method</TableHead>
-                            <TableHead class="text-right"> Amount </TableHead>
+                            <TableHead>Client</TableHead>
+                            <TableHead>Project</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         <TableRow v-for="invoice in invoices" :key="invoice.invoice">
-                            <TableCell class="font-medium">
-                                {{ invoice.invoice }}
-                            </TableCell>
                             <TableCell>{{ invoice.paymentStatus }}</TableCell>
                             <TableCell>{{ invoice.paymentMethod }}</TableCell>
-                            <TableCell class="text-right">
-                                {{ invoice.totalAmount }}
+                            <TableCell class="flex w-full flex-row-reverse">
+                                <div class="flex flex-wrap space-x-1">
+                                    <span
+                                        class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset"
+                                        >00:30:24</span
+                                    >
+                                    <Button variant="ghost" class="rounded-full" size="icon">
+                                        <CirclePlay class="size-10" />
+                                    </Button>
+                                    <Button variant="ghost" class="rounded-full" size="icon">
+                                        <CirclePause class="size-10" />
+                                    </Button>
+                                    <Button variant="ghost" class="rounded-full" size="icon">
+                                        <CircleStop class="size-10" />
+                                    </Button>
+                                </div>
                             </TableCell>
                         </TableRow>
                     </TableBody>
