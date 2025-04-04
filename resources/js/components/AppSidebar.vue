@@ -14,7 +14,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Clock',
-        href: '#',
+        href: '/clocks',
         icon: Clock,
     },
     {
