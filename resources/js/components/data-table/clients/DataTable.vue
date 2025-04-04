@@ -78,7 +78,7 @@ watch(debouncedColumnFilters, (val) => {
             <div class="relative w-full max-w-sm items-center">
                 <Input class="max-w-[250px] pl-9" placeholder="Search Company or name..." v-model:model-value="columnFilters" />
                 <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
-                    <Search class="size-6 text-muted-foreground" />
+                    <Search class="text-muted-foreground size-6" />
                 </span>
             </div>
             <div class="ml-auto flex-row flex-wrap space-x-1">
@@ -101,7 +101,7 @@ watch(debouncedColumnFilters, (val) => {
                             :data-pinned="header.column.getIsPinned()"
                             :class="
                                 cn(
-                                    { 'sticky bg-background/95': header.column.getIsPinned() },
+                                    { 'bg-background/95 sticky': header.column.getIsPinned() },
                                     header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
                                 )
                             "
