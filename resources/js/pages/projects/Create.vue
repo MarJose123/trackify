@@ -161,7 +161,7 @@ const onSubmit = handleSubmit(async (values) => {
                                                     placeholder="Search Client..."
                                                 />
                                                 <span class="absolute inset-y-0 start-0 flex items-center justify-center px-3">
-                                                    <Search class="size-4 text-muted-foreground" />
+                                                    <Search class="text-muted-foreground size-4" />
                                                 </span>
                                             </div>
                                             <ComboboxEmpty> Nothing found.</ComboboxEmpty>
