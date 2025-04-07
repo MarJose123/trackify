@@ -13,8 +13,8 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Clock',
-        href: '/clocks',
+        title: 'Timer',
+        href: '/timer',
         icon: Clock,
     },
     {

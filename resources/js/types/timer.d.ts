@@ -4,7 +4,7 @@ import { Pagination } from '@/types/pagination';
 import { Project } from '@/types/projects';
 import { TimerOptions } from 'timer-node';
 
-export interface Clock {
+export interface Timer {
     id: number;
     duration: number;
     status: string;
@@ -19,7 +19,11 @@ export interface TimerOption extends TimerOptions {
     status: TimerStatus;
 }
 
-export interface clockData extends ShareData {
-    clock: Pagination & { data: Clock[] };
+export interface timerData extends ShareData {
+    timer: Pagination & { data: Timer[] };
+    fields: {
+        clients: Client[];
+        projects: Project[];
+    };
     notification?: flashNotification['notification'];
 }

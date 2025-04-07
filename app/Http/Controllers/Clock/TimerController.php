@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Clock;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TimerResource;
+use App\Models\Clients;
+use App\Models\Projects;
 use App\Models\Timer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ClockController extends Controller
+class TimerController extends Controller
 {
     public function index()
     {
@@ -17,8 +19,12 @@ class ClockController extends Controller
                 ->paginate()
         );
 
-        return Inertia::render('clock/Index', [
+        return Inertia::render('timer/Index', [
             'timer' => $timer,
+            'fields' => [
+                'clients' => Clients::all(),
+                'projects' => Projects::all(),
+            ],
         ]);
     }
 

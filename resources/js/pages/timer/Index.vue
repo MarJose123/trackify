@@ -11,30 +11,35 @@ import {
     ComboboxList,
     ComboboxTrigger,
 } from '@/components/ui/combobox';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Label } from '@/components/ui/label';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/vue3';
+import { Client } from '@/types/clients';
+import { Project } from '@/types/projects';
+import { timerData } from '@/types/timer';
+import { Head, usePage } from '@inertiajs/vue3';
 import { Check, ChevronsUpDown, CirclePause, CirclePlay, CircleStop, Search, Timer } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Project/Task Timer',
-        href: '/clocks',
+        href: '/timer',
     },
 ];
 
-const frameworks = [
-    { value: 'next.js', label: 'Next.js' },
-    { value: 'sveltekit', label: 'SvelteKit' },
-    { value: 'nuxt', label: 'Nuxt' },
-    { value: 'remix', label: 'Remix' },
-    { value: 'astro', label: 'Astro' },
-];
+const page = usePage<timerData>();
 
-const value = ref<(typeof frameworks)[0]>();
+const clockPayloadData = ref(page.props.timer);
+const clients = ref<Client[]>(page.props.fields.clients);
+const projects = ref<Project[]>(page.props.fields.projects);
+
+const clientModelValue = ref<Client>();
+const projectModelValue = ref<Project>();
+
+console.log(clockPayloadData);
 
 const invoices = [
     {
@@ -88,12 +93,13 @@ const invoices = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div class="flex w-full">
-                    <Combobox v-model="value" by="label" class="w-full">
+                <div class="flex w-full items-center gap-3">
+                    <Label>Client: </Label>
+                    <Combobox v-model="clientModelValue" by="label" class="w-full">
                         <ComboboxAnchor as-child>
                             <ComboboxTrigger as-child>
                                 <Button variant="outline" class="justify-between">
-                                    {{ value?.label ?? 'Select framework' }}
+                                    {{ clientModelValue ? `${clientModelValue?.company_name} - ${clientModelValue?.name}` : 'Select Client' }}
 
                                     <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
@@ -102,22 +108,18 @@ const invoices = [
 
                         <ComboboxList>
                             <div class="relative w-full max-w-sm items-center">
-                                <ComboboxInput
-                                    class="h-10 rounded-none border-0 border-b pl-9 focus-visible:ring-0"
-                                    placeholder="Select framework..."
-                                />
+                                <ComboboxInput class="h-10 rounded-none border-0 border-b pl-9 focus-visible:ring-0" placeholder="Select client..." />
                                 <span class="absolute inset-y-0 start-0 flex items-center justify-center px-3">
                                     <Search class="text-muted-foreground size-4" />
                                 </span>
                             </div>
 
-                            <ComboboxEmpty> No framework found.</ComboboxEmpty>
+                            <ComboboxEmpty> No client found.</ComboboxEmpty>
 
                             <ComboboxGroup>
-                                <ComboboxItem v-for="framework in frameworks" :key="framework.value" :value="framework">
-                                    {{ framework.label }}
-
-                                    <ComboboxItemIndicator>
+                                <ComboboxItem v-for="client in clients" :key="client.id" :value="client">
+                                    {{ client.company_name }} - {{ client.name }}
+                                    <ComboboxItemIndicator v-if="clientModelValue && clientModelValue.id == client.id">
                                         <Check :class="cn('ml-auto h-4 w-4')" />
                                     </ComboboxItemIndicator>
                                 </ComboboxItem>
@@ -125,12 +127,13 @@ const invoices = [
                         </ComboboxList>
                     </Combobox>
                 </div>
-                <div>
-                    <Combobox v-model="value" by="label">
+                <div class="flex w-full items-center gap-3">
+                    <Label>Project: </Label>
+                    <Combobox v-model="projectModelValue" by="label">
                         <ComboboxAnchor as-child>
                             <ComboboxTrigger as-child>
                                 <Button variant="outline" class="justify-between">
-                                    {{ value?.label ?? 'Select framework' }}
+                                    {{ projectModelValue ? `${projectModelValue.name}` : 'Select Project' }}
 
                                     <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
@@ -141,20 +144,20 @@ const invoices = [
                             <div class="relative w-full max-w-sm items-center">
                                 <ComboboxInput
                                     class="h-10 rounded-none border-0 border-b pl-9 focus-visible:ring-0"
-                                    placeholder="Select framework..."
+                                    placeholder="Select project..."
                                 />
                                 <span class="absolute inset-y-0 start-0 flex items-center justify-center px-3">
                                     <Search class="text-muted-foreground size-4" />
                                 </span>
                             </div>
 
-                            <ComboboxEmpty> No framework found.</ComboboxEmpty>
+                            <ComboboxEmpty> No project found.</ComboboxEmpty>
 
                             <ComboboxGroup>
-                                <ComboboxItem v-for="framework in frameworks" :key="framework.value" :value="framework">
-                                    {{ framework.label }}
+                                <ComboboxItem v-for="project in projects" :key="project.id" :value="project">
+                                    {{ project.name }}
 
-                                    <ComboboxItemIndicator>
+                                    <ComboboxItemIndicator v-if="projectModelValue && projectModelValue.id === project.id">
                                         <Check :class="cn('ml-auto h-4 w-4')" />
                                     </ComboboxItemIndicator>
                                 </ComboboxItem>
@@ -171,7 +174,6 @@ const invoices = [
             </div>
             <div class="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 rounded-xl border md:min-h-min">
                 <Table>
-                    <TableCaption>A list of your recent invoices.</TableCaption>
                     <TableHeader>
                         <TableRow>
                             <TableHead>Client</TableHead>
@@ -188,14 +190,14 @@ const invoices = [
                                         class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset"
                                         >00:30:24</span
                                     >
-                                    <Button variant="ghost" class="rounded-full" size="icon">
-                                        <CirclePlay class="size-10" />
+                                    <Button variant="ghost" class="rounded-full hover:bg-green-600 hover:text-white" size="icon">
+                                        <CirclePlay class="size-10 stroke-current" />
                                     </Button>
-                                    <Button variant="ghost" class="rounded-full" size="icon">
-                                        <CirclePause class="size-10" />
+                                    <Button variant="ghost" class="rounded-full hover:bg-orange-300 hover:text-white" size="icon">
+                                        <CirclePause class="size-10 stroke-current" />
                                     </Button>
-                                    <Button variant="ghost" class="rounded-full" size="icon">
-                                        <CircleStop class="size-10" />
+                                    <Button variant="ghost" class="rounded-full hover:bg-red-500 hover:text-white" size="icon">
+                                        <CircleStop class="size-10 stroke-current" />
                                     </Button>
                                 </div>
                             </TableCell>
