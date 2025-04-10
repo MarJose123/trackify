@@ -20,7 +20,7 @@
         "laravel/framework": "^12.0",
         "laravel/pint": "^1.21",
         "laravel/tinker": "^2.10.1",
-        "nativephp/electron": "1.0.0-beta.4",
+        "nativephp/electron": "*",
         "spatie/laravel-ray": "^1.40",
         "tightenco/ziggy": "^2.4"
     },
@@ -108,6 +108,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
