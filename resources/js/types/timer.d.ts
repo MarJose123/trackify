@@ -3,6 +3,7 @@ import { flashNotification } from '@/types/index';
 import { Pagination } from '@/types/pagination';
 import { Project } from '@/types/projects';
 import { TimerOptions } from 'timer-node';
+import type { PageProps } from '@inertiajs/core';
 
 export interface Timer {
     id: number;
@@ -19,7 +20,7 @@ export interface TimerOption extends TimerOptions {
     status: TimerStatus;
 }
 
-export interface timerData extends ShareData {
+export interface timerData extends PageProps {
     timer: Pagination & { data: Timer[] };
     fields: {
         clients: Client[];
