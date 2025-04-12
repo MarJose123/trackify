@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Clock;
 
+use App\Enums\TimerStatusEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TimerResource;
 use App\Models\Clients;
@@ -30,7 +31,30 @@ class TimerController extends Controller
 
     public function create() {}
 
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        $request->validate([
+            'clients_id' => ['required'],
+            'projects_id' => ['required'],
+            'duration' => ['nullable'],
+            'status' => ['nullable'],
+            'timer' => ['required'],
+        ]);
+
+        $timer = Timer::create([
+            'user_id' => $request->user()->id,
+            'clients_id' => $request->client_id,
+            'projects_id' => $request->project_id,
+            'duration' => $request->duration ?? 0,
+            'status' => $request->status ?? TimerStatusEnums::Initiated,
+            'timer' => $request->options
+        ]);
+
+        return response()->json([
+            'id' => $timer->id,
+        ]);
+
+    }
 
     public function show($id) {}
 

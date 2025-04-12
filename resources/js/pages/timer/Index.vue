@@ -13,7 +13,10 @@ import {
 } from '@/components/ui/combobox';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { ToastAction, useToast } from '@/components/ui/toast';
+import { TimerStatus } from '@/enums/Timer';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { api } from '@/lib/axios';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
 import { Client } from '@/types/clients';
@@ -21,7 +24,7 @@ import { Project } from '@/types/projects';
 import { timerData } from '@/types/timer';
 import { Head, usePage } from '@inertiajs/vue3';
 import { Check, ChevronsUpDown, CirclePause, CirclePlay, CircleStop, Search, Timer } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { h, ref } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -85,6 +88,38 @@ const invoices = [
         paymentMethod: 'Credit Card',
     },
 ];
+
+const initiateTimer = async () => {
+    // push the option object of the timer to the server
+    api()
+        .post(route('timer.store'), {
+            client_id: clientModelValue.value?.id,
+            project_id: projectModelValue.value?.id,
+            status: TimerStatus.initiated,
+        })
+        .catch((error) => {
+            console.error(error);
+            useToast().toast({
+                title: 'Uh oh! Something went wrong.',
+                description: 'There was a problem with your request.',
+                variant: 'destructive',
+                action: h(
+                    ToastAction,
+                    {
+                        altText: 'Try again',
+                        onClick: initiateTimer,
+                    },
+                    {
+                        default: () => 'Try again',
+                    },
+                ),
+            });
+        })
+        .then((resp) => {
+            console.log(resp);
+            // const TimerId = resp?.response
+        });
+};
 </script>
 
 <template>
